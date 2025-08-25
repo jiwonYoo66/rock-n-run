@@ -1,0 +1,48 @@
+{
+  "name": "rock-n-run-publishing",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@apollo/client": "^4.0.0",
+    "@apollo/client-integration-nextjs": "^0.13.0",
+    "axios": "^1.11.0",
+    "d3-array": "^3.2.4",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
+    "graphql": "^16.11.0",
+    "isomorphic-dompurify": "^2.26.0",
+    "next": "15.5.0",
+    "next-sitemap": "^4.2.3",
+    "polished": "^4.3.1",
+    "react": "19.1.0",
+    "react-cookie": "^8.0.1",
+    "react-datepicker": "^8.7.0",
+    "react-daum-postcode": "^3.2.0",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.4.0",
+    "react-toastify": "^11.0.5",
+    "styled-components": "^6.1.19",
+    "styled-reset": "^4.5.2",
+    "swiper": "^11.2.10"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@svgr/webpack": "^8.1.0",
+    "@types/d3-array": "^3.2.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5"
+  }
+}

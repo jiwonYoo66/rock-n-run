@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@assets/*": ["src/assets/*"],
+            "@apollo-client/*": ["src/apollo-client/*"],
+            "@components/*": ["src/components/*"],
+            "@data/*": ["src/data/*"],
+            "@context/*": ["src/context/*"],
+            "@graphql/*": ["src/graphql/*"],
+            "@hooks/*": ["src/hooks/*"],
+            "@lib/*": ["src/lib/*"],
+            "@store/*": ["src/store/*"],
+            "@styles/*": ["src/styles/*"],
+            "@utils/*": ["src/utils/*"]
+        }
+    }
+}
