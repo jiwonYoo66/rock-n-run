@@ -1,11 +1,4 @@
-"use client";
-import Image from "next/image";
-
+import { Wrapper } from "@components/share/commons/commons.style";
 export default function Home() {
-  return (
-    <div>
-      <Image src="./assets/icons/logo.svg" width={200} height={50} alt="logo" />
-      {/* Main */}
-    </div>
-  );
+  return <Wrapper>Main</Wrapper>;
 }

@@ -1,216 +1,230 @@
 "use client";
-import React, { useEffect } from "react";
-import { useReactiveVar } from "@apollo/client";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import {
-  IoChevronBackSharp,
-  IoCloseSharp,
-  IoHomeOutline,
-} from "react-icons/io5";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect } from "react";
+import { useQuery, useReactiveVar } from "@apollo/client/react";
+import styled from "styled-components";
+
+import theme from "@styles/theme";
 import { paths } from "@lib/paths";
-import { IoMenu } from "react-icons/io5";
-import { dentalIdVar, dentalInfoVar } from "@store/index";
-import logo from "@assets/images/logo.png";
-import * as H from "./header.style";
-import { useQuery } from "@apollo/client";
-import { Query, SeeHpHospitalInfo } from "@graphql/types";
-import { SEE_HP_HOSPITAL_INFO } from "@graphql/queries";
+import { userVar } from "@store/index";
+
+import { Container } from "@components/share/commons/commons.style";
 
 const Header = () => {
-  const router = useRouter();
-  const params = useParams<{ dentalId: string }>();
-  const pathname = usePathname();
-  const dentalId = +params.dentalId;
-  const dentalInfo = useReactiveVar(dentalInfoVar);
+  const userInfo = useReactiveVar(userVar);
 
-  const { data, loading } = useQuery<Pick<Query, "seeHPHospitalInfo">>(
-    SEE_HP_HOSPITAL_INFO,
-    {
-      variables: {
-        hspId: dentalId,
-      },
-    }
-  );
+  // const { data, loading } = useQuery<Pick<Query, "seeHPHospitalInfo">>(
+  //   SEE_HP_HOSPITAL_INFO,
+  //   {
+  //     variables: {
+  //       hspId: dentalId,
+  //     },
+  //   }
+  // );
 
-  const menuHidden =
-    pathname.includes(paths.RETREATMENT) ||
-    pathname.includes(paths.INSURANCE) ||
-    pathname.includes(paths.PARKING) ||
-    pathname.includes(paths.RESERVATION) ||
-    pathname.includes(paths.NEWS) ||
-    pathname.includes(paths.CARE) ||
-    pathname.includes(paths.HEALTH) ||
-    pathname.includes(paths.ABOUT);
-  const backVisible = // 뒤로가기
-    (pathname.split("/")?.[3] === paths.RESERVATION &&
-      pathname.split("/")?.[4] !== paths.COMPLETE &&
-      pathname.split("/")?.[4] !== paths.CONFIRM) ||
-    // pathname.split("/")?.[4] === paths.INFO ||
-    // pathname.split("/")?.[4] === paths.SCHEDULE ||
-    // pathname.split("/")?.[4] === paths.EDIT ||
-    (pathname.split("/")?.[3] === paths.RETREATMENT &&
-      pathname.split("/")?.[4] !== paths.COMPLETE) ||
-    (pathname.split("/")?.[3] === paths.INSURANCE &&
-      pathname.split("/")?.[4] !== paths.COMPLETE) ||
-    (pathname.split("/")?.[3] === paths.PARKING &&
-      pathname.split("/")?.[4] !== paths.COMPLETE) ||
-    pathname.split("/")?.[4] === paths.REGISTER ||
-    pathname.split("/")?.[4] === paths.HISTORY ||
-    pathname.includes(paths.NEWS) ||
-    pathname.includes(paths.CARE) ||
-    pathname.includes(paths.HEALTH) ||
-    pathname.includes(paths.ABOUT);
-  const closeVisible = pathname.split("/")?.[4] === paths.COMPLETE; // 닫기
-  // const navVisible = pathname === paths.HOME; // Nav 목록
-  const navVisible = pathname === `/dental/${params.dentalId}`; // Nav 목록
-  const isNotDesktop = // 예약 페이지
-    pathname.includes(paths.RETREATMENT) ||
-    pathname.includes(paths.INSURANCE) ||
-    pathname.includes(paths.PARKING) ||
-    pathname.includes(paths.RESERVATION) ||
-    pathname.includes(paths.NEWS) ||
-    pathname.includes(paths.CARE) ||
-    pathname.includes(paths.HEALTH) ||
-    pathname.includes(paths.ABOUT);
-  const kakaoUrlHeader = pathname.split("/")?.[4] === paths.CONFIRM; // 카카오 url 접근 헤더
-
-  const headerTitle = () => {
-    let detailId = pathname.split("/")?.[4];
-
-    if (!dentalId) return "";
-
-    if (!detailId && pathname.split("/")?.[3] === paths.NEWS) {
-      return "병원 최신 소식";
-    }
-    if (!detailId && pathname.split("/")?.[3] === paths.CARE) {
-      return "치료 후 주의사항";
-    }
-    if (!detailId && pathname.split("/")?.[3] === paths.HEALTH) {
-      return "건강 정보";
-    }
-    if (pathname.split("/")?.[3] === paths.ABOUT) {
-      return "의료진 정보";
-    }
-  };
-
-  const closeButtonPath = () => {
-    if (pathname.includes(paths.RESERVATION)) {
-      return `/${paths.DENTAL}/${dentalId}/${paths.RESERVATION}/${paths.INFO}`;
-    }
-    return `/${paths.DENTAL}/${dentalId}`;
-  };
-
-  const handleGoBack = () => {
-    if (
-      pathname === `/${paths.DENTAL}/${dentalId}/${paths.RESERVATION}` ||
-      pathname === `/${paths.DENTAL}/${dentalId}/${paths.RETREATMENT}`
-    ) {
-      router.push(`/${paths.DENTAL}/${dentalId}`);
-    } else if (pathname.includes(`${paths.RESERVATION}/${paths.INFO}`)) {
-      router.push(`/${paths.DENTAL}/${dentalId}/${paths.RESERVATION}`);
-    } else {
-      router.back();
-    }
-  };
-
-  useEffect(() => {
-    if (dentalId) dentalIdVar(dentalId);
-    if (!loading && data) {
-      dentalInfoVar(data?.seeHPHospitalInfo as SeeHpHospitalInfo);
-    }
-  }, [dentalId, data, loading]);
-
-  useEffect(() => {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-  }, []);
-
-  useEffect(() => {
-    if (
-      !pathname.includes(paths.RESERVATION) &&
-      !pathname.includes(paths.RETREATMENT)
-    ) {
-      sessionStorage.removeItem("userInfo");
-      sessionStorage.removeItem("scheduleInfo");
-      sessionStorage.removeItem("pathType");
-    }
-  }, [pathname]);
+  // useEffect(() => {
+  //   let vh = window.innerHeight * 0.01;
+  //   document.documentElement.style.setProperty("--vh", `${vh}px`);
+  // }, []);
 
   return (
-    <H.Wrapper>
-      <H.Contents $isNotDesktop={isNotDesktop}>
-        <H.FlexibleBox>
-          <H.ControlButton $visible={backVisible} onClick={handleGoBack}>
-            <IoChevronBackSharp fontSize={24} />
-          </H.ControlButton>
-          <H.ControlButton
-            $visible={kakaoUrlHeader}
-            onClick={() => router.push(`/${paths.DENTAL}/${dentalId}`)}
-          >
-            <IoHomeOutline fontSize={24} />
-          </H.ControlButton>
-          <H.Logo
-            $visible={menuHidden}
-            onClick={() =>
-              (window.location.href = `/${paths.DENTAL}/${dentalId}`)
-            }
-          >
-            <H.NextImage
-              quality={100}
-              width={74}
-              height={36}
-              src={logo}
-              alt="Logo"
+    <Wrapper>
+      {/* 상단 공지 & 메뉴 */}
+      <TopHeader>
+        <HeaderContainer $padding="0 16px">
+          {/* 공지 */}
+          <TextBanner>
+            락앤런 컴퍼니에 오신 것을 환영합니다. 지금 장수 쿨밸리 레이스 참가
+            신청 모집이 진행중에 있습니다. 추첨을 통해 진행되며 추첨 내용은 추후
+            공지됩니다. 많은 관심 부탁드립니다.
+          </TextBanner>
+          {/* 상단 메뉴 */}
+          <TopMenu>
+            <YellowMenu>
+              <YellowLink href={`/${paths.TOURNAMENT}/${paths.RESULT}`}>
+                대회결과
+                <Image
+                  width={16}
+                  height={16}
+                  src="./assets/icons/icon_run.svg"
+                  alt="running icon"
+                />
+              </YellowLink>
+              <Bar />
+              <YellowLink href={`/${paths.GALLERY}`}>
+                갤러리
+                <Image
+                  width={16}
+                  height={16}
+                  src="./assets/icons/icon_gallery.svg"
+                  alt="gallery icon"
+                />
+              </YellowLink>
+            </YellowMenu>
+            <BlackMenu>
+              <BlackLink href={`/${paths.MYINFO}`}>내정보</BlackLink>
+              <BlackLink href={`/${paths.LOGIN}`}>로그인</BlackLink>
+            </BlackMenu>
+          </TopMenu>
+        </HeaderContainer>
+      </TopHeader>
+      {/* 네비게이션 헤더 */}
+      <NavHeader>
+        <HeaderContainer $padding="0 16px">
+          <Link href={paths.HOME}>
+            <Image
+              width={160}
+              height={21}
+              src="./assets/images/logo.svg"
+              alt="logo"
             />
-          </H.Logo>
-        </H.FlexibleBox>
-        <H.FlexibleBox>
-          {headerTitle() ? (
-            <H.Title>{headerTitle()}</H.Title>
-          ) : (
-            <H.NavList $visible={navVisible}>
-              <H.NavLink href={`${params.dentalId}/${paths.RETREATMENT}`}>
-                접수
-              </H.NavLink>
-              <H.NavLink href={`${params.dentalId}/${paths.RESERVATION}`}>
-                진료 예약
-              </H.NavLink>
-              <H.NavLink href={`${params.dentalId}/${paths.INSURANCE}`}>
-                보험 청구
-              </H.NavLink>
-              <H.NavLink href={`${params.dentalId}/${paths.PARKING}`}>
-                주차 신청
-              </H.NavLink>
-              {/* <H.NavLink href={`${params.dentalId}/${paths.PRODUCT}`}>
-                상품 구매
-              </H.NavLink> */}
-              <H.NavLink href={`${params.dentalId}/${paths.MAP}`}>
-                오시는 길
-              </H.NavLink>
-              <H.NavLink href={`tel:${dentalInfo?.hospTel}`}>
-                전화 걸기
-              </H.NavLink>
-            </H.NavList>
-          )}
-        </H.FlexibleBox>
-        <H.FlexibleBox>
-          <H.Hamburger $hidden={menuHidden}>{/*<IoMenu />*/}</H.Hamburger>
-          <H.ControlButton
-            $visible={closeVisible}
-            onClick={() => {
-              sessionStorage.removeItem("pathType");
-              router.push(closeButtonPath());
-            }}
-          >
-            <IoCloseSharp fontSize={24} />
-          </H.ControlButton>
-          <H.HospitalName $visible={kakaoUrlHeader}>
-            {dentalInfo?.hospNm ? dentalInfo?.hospNm : ""}
-          </H.HospitalName>
-        </H.FlexibleBox>
-      </H.Contents>
-    </H.Wrapper>
+          </Link>
+          <Navigation>
+            <Link href={`/${paths.TOURNAMENT}`}>대회</Link>
+            <Link href={`/${paths.PROGRAM}`}>프로그램</Link>
+            <Link href={`/${paths.CALENDAR}`}>캘린더</Link>
+            <Link href={`/${paths.SHOP}`}>스토어</Link>
+            <Link href={`/${paths.NEWS}`}>소식</Link>
+          </Navigation>
+          <LangButton>ENG</LangButton>
+
+          <MenuButton>
+            <Image
+              width={24}
+              height={24}
+              src="./assets/icons/icon_menu.svg"
+              alt="menu icon"
+            />
+          </MenuButton>
+        </HeaderContainer>
+      </NavHeader>
+    </Wrapper>
   );
 };
 
 export default Header;
+
+const Wrapper = styled.header`
+  position: sticky;
+  width: 100%;
+`;
+
+const TopHeader = styled.div`
+  display: none;
+  width: 100%;
+  height: 40px;
+  background-color: ${theme.colors.blackColor};
+  ${theme.devices.desktop} {
+    display: block;
+  }
+`;
+
+const NavHeader = styled.div`
+  width: 100%;
+  height: 48px;
+  border-bottom: ${theme.colors.blackColor} 1px solid;
+
+  ${theme.devices.desktop} {
+    height: 65px;
+  }
+`;
+
+const HeaderContainer = styled(Container)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+`;
+
+const TextBanner = styled.div`
+  ${theme.typography.bodyMobile}
+  padding: 0 40px 0 0;
+  width: calc(100% - 390px);
+  color: ${theme.colors.whiteColor};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+const TopMenu = styled.ul`
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+`;
+const YellowMenu = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 254px;
+  height: 100%;
+  background-color: ${theme.colors.pointYellow};
+`;
+const Bar = styled.span`
+  display: inline-block;
+  width: 0.5px;
+  height: 12px;
+  background-color: ${theme.colors.blackColor};
+`;
+const YellowLink = styled(Link)`
+  ${theme.typography.bodyMobile}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 125px;
+  font-family: PretendardMedium, sans-serif;
+`;
+const BlackMenu = styled.li`
+  display: flex;
+  align-items: center;
+  width: 124px;
+  height: 100%;
+`;
+const BlackLink = styled(Link)`
+  ${theme.typography.bodyMobile}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 62px;
+  color: ${theme.colors.whiteColor};
+`;
+const Navigation = styled.nav`
+  ${theme.typography.bodyDesktop}
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* display: flex; */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  font-family: PretendardBold, sans-serif;
+  ${theme.devices.desktop} {
+    display: flex;
+  }
+`;
+
+const MenuButton = styled.button`
+  width: 24px;
+  height: 24px;
+  ${theme.devices.desktop} {
+    display: none;
+  }
+`;
+
+const LangButton = styled.button`
+  ${theme.typography.bodyMobile}
+  display: none;
+  padding: 4px 8px;
+  border-radius: 16px;
+  color: ${theme.colors.whiteColor};
+  background-color: ${theme.colors.blackColor};
+  font-family: PretendardMedium, sans-serif;
+  ${theme.devices.desktop} {
+    display: block;
+  }
+`;

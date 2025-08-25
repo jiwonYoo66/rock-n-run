@@ -9,3 +9,19 @@ export type DataValueType = {
   option?: any;
   option2?: any;
 };
+
+export type FlexBoxType = {
+  $width?: string;
+  $height?: string;
+  $flex?: number;
+  $flexDirection?: string;
+  $alignItems?: string;
+  $justifyContent?: string;
+  $flexWrap?: string;
+  $gap?: number;
+  $margin?: string;
+  $padding?: string;
+  $border?: string;
+  $fontColor?: string;
+  $fontSize?: number;
+};

@@ -1,25 +1,85 @@
-'use client';
-import styled, { css } from 'styled-components';
-import theme from '@styles/theme';
+"use client";
+import styled, { css } from "styled-components";
+import theme from "@styles/theme";
+import { FlexBoxType } from "@utils/types";
 
-export const MobileWrapper = styled.main<{ $isFooter?: boolean; $padding?: string; }>`
+export const Wrapper = styled.main<{ $padding?: string }>`
+  position: relative;
+  margin: 0 auto;
+  padding: ${({ $padding }) => ($padding ? $padding : "20px 16px")};
+  max-width: 719px;
+  min-height: calc(100vh - 48px - 485px);
+  font-family: PretendardRegular, sans-serif;
+  ${theme.devices.tablet} {
+    max-width: 1079px;
+  }
+  ${theme.devices.desktop} {
+    max-width: 1640px;
+    min-height: calc(100vh - 105px - 425px);
+  }
+`;
+
+export const Container = styled.div<{ $padding?: string }>`
+  position: relative;
+  margin: 0 auto;
+  padding: ${({ $padding }) => ($padding ? $padding : "0")};
+  max-width: 719px;
+  font-family: PretendardRegular, sans-serif;
+
+  /* background-color: tomato; */
+  ${theme.devices.tablet} {
+    max-width: 1079px;
+    /* background-color: saddlebrown; */
+  }
+  ${theme.devices.desktop} {
+    max-width: 1640px;
+    /* background-color: gold; */
+  }
+`;
+export const FlexBox = styled.div<FlexBoxType>`
+  display: flex;
+  flex: ${({ $flex }) => ($flex ? $flex : 1)};
+  flex-direction: ${({ $flexDirection }) =>
+    $flexDirection ? $flexDirection : "row"};
+  align-items: ${({ $alignItems }) => ($alignItems ? $alignItems : "center")};
+  justify-content: ${({ $justifyContent }) =>
+    $justifyContent ? $justifyContent : "flex-start"};
+  flex-wrap: ${({ $flexWrap }) => ($flexWrap ? $flexWrap : "unset")};
+  gap: ${({ $gap }) => ($gap ? $gap : 0)}px;
+  margin: ${({ $margin }) => ($margin ? $margin : 0)};
+  padding: ${({ $padding }) => ($padding ? $padding : 0)};
+  width: ${({ $width }) => ($width ? $width : "100%")};
+  height: ${({ $height }) => ($height ? $height : "auto")};
+  font-size: ${({ $fontSize }) => ($fontSize ? $fontSize : 15)}px;
+  color: ${({ $fontColor }) =>
+    $fontColor ? $fontColor : theme.colors.blackColor};
+`;
+export const MobileWrapper = styled.main<{
+  $isFooter?: boolean;
+  $padding?: string;
+}>`
   max-width: 720px;
-  min-height: ${({ $isFooter }) => `calc(var(--vh, 1vh) * 100 - 52px - ${$isFooter ? 252 + 60 : 0}px)`};
+  min-height: ${({ $isFooter }) =>
+    `calc(var(--vh, 1vh) * 100 - 52px - ${$isFooter ? 252 + 60 : 0}px)`};
   //min-height: calc(var(--vh, 1vh) * 100 - 52px);
   //min-height: 500px;
   font-family: PretendardRegular, sans-serif;
-  padding: ${({ $padding }) => $padding ? $padding : '20px 16px'};
+  padding: ${({ $padding }) => ($padding ? $padding : "20px 16px")};
   position: relative;
   margin: 0 auto;
 
-  ${({ $isFooter }) => $isFooter && css`
-    min-height: calc(var(--vh, 1vh) * 100 - 52px - 252px - 60px); // footer: 252, bottomNavigator: 60
-    padding-bottom: 100px;
+  ${({ $isFooter }) =>
+    $isFooter &&
+    css`
+      min-height: calc(
+        var(--vh, 1vh) * 100 - 52px - 252px - 60px
+      ); // footer: 252, bottomNavigator: 60
+      padding-bottom: 100px;
 
-    ${theme.devices.desktop} {
-      min-height: calc(var(--vh, 1vh) * 100 - 52px - 214px);
-    }
-  `};
+      ${theme.devices.desktop} {
+        min-height: calc(var(--vh, 1vh) * 100 - 52px - 214px);
+      }
+    `};
 `;
 export const ContentsGridList = styled.div`
   display: grid;

@@ -8,57 +8,79 @@ import "swiper/css/bundle";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-toastify/dist/ReactToastify.css";
 
-const SCHABOCondensed = localFont({
+const PretendardRegular = localFont({
   src: [
     {
-      path: "./fonts/SCHABO-Condensed.ttf",
+      path: "./fonts/Pretendard/Pretendard-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+});
+const PretendardMedium = localFont({
+  src: [
+    {
+      path: "./fonts/Pretendard/Pretendard-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+  ],
+});
+const PretendardSemiBold = localFont({
+  src: [
+    {
+      path: "./fonts/Pretendard/Pretendard-SemiBold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+  ],
+});
+const PretendardBold = localFont({
+  src: [
+    {
+      path: "./fonts/Pretendard/Pretendard-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+});
+const Tenada = localFont({
+  src: [
+    {
+      path: "./fonts/Tenada/Tenada.woff2",
       weight: "normal",
-      style: "condensed",
+      style: "normal",
     },
   ],
 });
 
 export default createGlobalStyle`
   @font-face {
-    font-family: SCHABOCondensed;
-    src: url(${SCHABOCondensed});
+    font-family: Tenada;
+    src: url(${Tenada});
   }
-  
+
   @font-face {
     font-family: PretendardRegular;
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+    src: url(${PretendardRegular});
   }
 
   @font-face {
     font-family: PretendardMedium;
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
+    src: url(${PretendardMedium});
   }
 
   @font-face {
     font-family: PretendardSemiBold;
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
+    src: url(${PretendardSemiBold});
   }
 
   @font-face {
     font-family: PretendardBold;
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: PretendardExtraBold;
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
+    src: url(${PretendardBold});
   }
 
-  @font-face {
+  /* @font-face {
     font-family: AppleSDGothicNeoEB;
     src: local('AppleSDGothicNeoEB'), url('/fonts/AppleSDGothicNeoEB.woff') format('woff');
     font-weight: 900;
@@ -91,7 +113,7 @@ export default createGlobalStyle`
     src: local('AppleSDGothicNeoR'), url('/fonts/AppleSDGothicNeoR.woff') format('woff');
     font-weight: 400;
     font-style: normal;
-  }
+  } */
 
   * {
     box-sizing: border-box;
@@ -111,14 +133,16 @@ export default createGlobalStyle`
   } */
 
   body {
-    font-family: PretendardRegular, sans-serif;
     position: static;
     top: 0 !important;
     margin: 0;
     touch-action: pan-x pan-y;
+    background-color: ${theme.colors.whiteColor};
+    font-size: 14px;
+    line-height: 22px;
+    font-family: PretendardRegular, sans-serif;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    background-color: ${theme.colors.whiteColor};
 
     ${theme.devices.mobile} {
       scrollbar-width: none;

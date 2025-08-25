@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { ApolloWrapper } from "@apollo-client/ApolloProvider";
 import StyledComponentsProvider from "@styles/StyledComponentsProvider";
+import Header from "@components/layout/header/Header";
+import Footer from "@components/layout/footer/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -28,7 +30,11 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <ApolloWrapper>
-          <StyledComponentsProvider>{children}</StyledComponentsProvider>
+          <StyledComponentsProvider>
+            <Header />
+            {children}
+            <Footer />
+          </StyledComponentsProvider>
         </ApolloWrapper>
       </body>
     </html>

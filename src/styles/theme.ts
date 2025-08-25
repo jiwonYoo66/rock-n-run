@@ -10,7 +10,6 @@ const colors = {
   blackColor: "#000000",
   activeRed: "#C61200",
   activeLightRed: "#FF0000",
-  //   activeBrightRed: "#FF6969",
   activeBlue: "#2491FF",
   activeIndigo: "#0C326F",
   activeOrange: "#FF5300",
@@ -18,42 +17,45 @@ const colors = {
   // Font
   grayFontColor: "#919191", // icon
   deepGrayFontColor: "#6E6E6E", // subtext, placeholder
-  //   deepGrayFontColor2: "#707070",
-  //   darkGrayFontColor: "#333333",
   lightGrayFontColor: "#B3B3B3", // disabled
-  //   ultraLightGrayFontColor: "#AAAAAA",
   darkPoint: "#222222",
 
   // Border
   grayBorderColor: "#D1D1D1",
   lightGrayBorderColor: "#E5E5E5", // line
+  textSeperateBorder: "#D9D9D9",
 
   // Background
   componentsBgColor: "#F6F6F6",
   deepNavyBlueBgColor: "#2F3644",
-  //   footerBgColor: "#F9F9F9",
   ultraLightGrayBgColor: "#F3F3F3", // bg
   whiteHoverColor: "#F0F0F0",
   disabledColor: "#f2f2f2",
 
   ///// MainPage /////
   // BG
-  //   brightBg: "#DCEDF5",
-  //   darkBg: "#050D1C",
   blueBg: "#2F5BDB",
   // TEXT
-  //   textGray: "#CDCFD3",
-  //   textSide: "#738FC3",
   positiveBlue: "#0078FF",
   textBlue: "#14AAFF",
-  //   textHoverBlue: "#2F5CDD",
   mainYellow: "#F9C920", // 락앤런 포인트
   pointYellow: "#FEEA00", // point
+
+  //   activeBrightRed: "#FF6969",
+  //   deepGrayFontColor2: "#707070",
+  //   darkGrayFontColor: "#333333",
+  //   ultraLightGrayFontColor: "#AAAAAA",
+  //   footerBgColor: "#F9F9F9",
+  //   brightBg: "#DCEDF5",
+  //   darkBg: "#050D1C",
+  //   textGray: "#CDCFD3",
+  //   textSide: "#738FC3",
+  //   textHoverBlue: "#2F5CDD",
 };
 const deviceSizes = {
   mobile: 375,
   tablet: 720,
-  desktop: 1640,
+  desktop: 1080,
 };
 const devices = {
   // 모바일 ~ 719px
