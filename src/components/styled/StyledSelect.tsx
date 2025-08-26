@@ -24,6 +24,8 @@ type StyledSelectType = {
   flex?: number;
   typography?: TypographyType;
   fontColor?: string;
+  fontFamily?: string;
+  fontSize?: number;
   padding?: string;
   margin?: string;
   border?: string;
@@ -45,9 +47,11 @@ const StyledSelect = ({
   flex,
   typography,
   fontColor = theme.colors.blackColor,
+  fontFamily = "PretendardRegular",
+  fontSize = 14,
   padding = "14px 12px",
   margin,
-  border = `1px solid ${theme.colors.lightGrayBorderColor}`,
+  border,
   borderRadius = 4,
   title,
   value,
@@ -66,6 +70,8 @@ const StyledSelect = ({
         $fontColor={
           placeholder === value ? theme.colors.grayFontColor : fontColor
         }
+        $fontFamily={fontFamily}
+        $fontSize={fontSize}
         $typography={typography}
         $padding={padding}
         $border={border}
@@ -131,6 +137,8 @@ const Select = styled.select<{
   $height?: number;
   $typography?: TypographyType;
   $fontColor?: string;
+  $fontFamily?: string;
+  $fontSize?: number;
   $padding?: string;
   $border?: string;
   $borderRadius?: number;
@@ -139,7 +147,8 @@ const Select = styled.select<{
   height: ${({ $height }) => ($height ? `${$height}px` : "auto")};
   ${({ $typography }) =>
     $typography ? $typography : theme.typography.bodyMobile};
-  font-family: PretendardRegular, sans-serif;
+  font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
+  font-size: ${({ $fontSize }) => $fontSize}px;
   font-weight: 500;
   color: ${({ $fontColor }) =>
     $fontColor ? $fontColor : theme.colors.blackColor};
@@ -147,7 +156,7 @@ const Select = styled.select<{
   border: ${({ $border }) => ($border ? $border : "none")};
   border-radius: ${({ $borderRadius }) =>
     $borderRadius ? $borderRadius : 0}px;
-  background-image: url("/selectArrowDown.svg");
+  background-image: url("./assets/icons/icon_selectArrowDown.svg");
   background-size: 16px;
   background-repeat: no-repeat;
   background-color: inherit;

@@ -233,13 +233,14 @@ export default createGlobalStyle`
     padding: 0;
     outline: none;
     border: none;
+    background-color: transparent;
     cursor: pointer;
-    background-color: ${theme.colors.whiteColor};
   }
 
   select {
     border: none;
     outline: none;
+    background-color: transparent;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
