@@ -19,11 +19,17 @@ export const Wrapper = styled.main<{ $padding?: string }>`
   }
 `;
 
-export const Container = styled.div<{ $padding?: string }>`
+export const Container = styled.div<{
+  $padding?: string;
+  $height?: string;
+  $isMobile?: boolean;
+  $isDesktop?: boolean;
+}>`
   position: relative;
   margin: 0 auto;
   padding: ${({ $padding }) => ($padding ? $padding : "0")};
   max-width: 719px;
+  height: ${({ $height }) => ($height ? $height : "auto")};
   font-family: PretendardRegular, sans-serif;
 
   /* background-color: tomato; */
@@ -35,6 +41,23 @@ export const Container = styled.div<{ $padding?: string }>`
     max-width: 1640px;
     /* background-color: gold; */
   }
+
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
+      ${theme.devices.desktop} {
+        display: none;
+      }
+    `};
+
+  ${({ $isDesktop }) =>
+    $isDesktop &&
+    css`
+      display: none;
+      ${theme.devices.desktop} {
+        display: block;
+      }
+    `};
 `;
 export const FlexBox = styled.div<FlexBoxType>`
   display: flex;

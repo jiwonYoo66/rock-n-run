@@ -4,6 +4,7 @@ import reset from "styled-reset";
 import theme from "./theme";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
+import "swiper/css";
 import "swiper/css/bundle";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-toastify/dist/ReactToastify.css";

@@ -4,6 +4,7 @@ import { range } from "d3-array";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { Address } from "react-daum-postcode/lib/loadPostcode";
+import { deflate } from "zlib";
 
 // 아이디 영문 및 숫자
 export const isEngNumber = (word: string) => {
@@ -319,4 +320,25 @@ export const validateCreditCard = (cardNumber: string) => {
 
   // 합이 10의 배수인지 확인
   return sum % 10 === 0;
+};
+
+export const dayNumToString = (day: number) => {
+  switch (day) {
+    case 0:
+      return "일";
+    case 1:
+      return "월";
+    case 2:
+      return "화";
+    case 3:
+      return "수";
+    case 4:
+      return "목";
+    case 5:
+      return "금";
+    case 6:
+      return "토";
+    default:
+      return day;
+  }
 };
