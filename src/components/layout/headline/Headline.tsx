@@ -5,18 +5,50 @@ import styled, { css } from "styled-components";
 
 import theme from "@styles/theme";
 
+import { FlexBox } from "@components/share/commons/commons.style";
+
+// type TabMenuProps = {
+//     setSelectedTab: Dispatch<SetStateAction<string>>;
+//     selectedTab: string;
+//     options: string[];
+//     margin?: string;
+// };
+
 const Headline = ({
   title = "",
   imgSrc = "",
   padding = "80px 0 32px",
   onClick = () => null,
+  options = [],
+  setSelectedTab,
+  selectedTab,
   MORE = false,
   BORDER = false,
+  TAB = false,
 }: any) => {
   return (
     <Wrapper $padding={padding} $border={BORDER}>
       <Title>
-        {title}
+        {/* {title} */}
+        {TAB ? (
+          <FlexBox>
+            {options.map((option: string, index: number) => (
+              <TabMenu key={`${index}-${option}`}>
+                <Input
+                  type="radio"
+                  id={`${index}-filter`}
+                  name="filter"
+                  value={option}
+                  onChange={(e) => setSelectedTab(e.target.value)}
+                  checked={option === selectedTab}
+                />
+                <Label htmlFor={`${index}-filter`}>{option}</Label>
+              </TabMenu>
+            ))}
+          </FlexBox>
+        ) : (
+          title
+        )}
         {imgSrc && (
           <IconWrapper>
             <Image src={imgSrc} alt="title icon" fill />
@@ -54,6 +86,34 @@ const Title = styled.h2`
   font-family: Tenada, sans-serif;
   ${theme.devices.desktop} {
     ${theme.typography.emphasizedTitle}
+  }
+`;
+
+const TabMenu = styled.div`
+  margin: 0 6px 0 0;
+  ${theme.devices.desktop} {
+    margin: 0 28px 0 0;
+  }
+`;
+
+const Label = styled.label`
+  ${theme.typography.largeTitle}
+  display: flex;
+  align-items: baseline;
+  font-family: Tenada, sans-serif;
+  color: ${theme.colors.lightGrayFontColor};
+  transition: all 0.25s;
+  cursor: pointer;
+  ${theme.devices.desktop} {
+    ${theme.typography.emphasizedTitle}
+  }
+`;
+
+const Input = styled.input`
+  display: none;
+  &:checked ~ label {
+    color: ${theme.colors.blackColor};
+    /* border-bottom: ${theme.colors.positiveBlue} 2px solid; */
   }
 `;
 

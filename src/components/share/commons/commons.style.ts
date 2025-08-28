@@ -28,6 +28,7 @@ export const Container = styled.div<{
   position: relative;
   margin: 0 auto;
   padding: ${({ $padding }) => ($padding ? $padding : "0")};
+  width: 100%;
   max-width: 719px;
   height: ${({ $height }) => ($height ? $height : "auto")};
   font-family: PretendardRegular, sans-serif;
@@ -77,6 +78,31 @@ export const FlexBox = styled.div<FlexBoxType>`
   color: ${({ $fontColor }) =>
     $fontColor ? $fontColor : theme.colors.blackColor};
 `;
+
+export const StatusBadge = styled.span<{ $margin?: string; $status?: number }>`
+  ${theme.typography.bodyMobile}
+  display:inline-block;
+  margin: ${({ $margin }) => ($margin ? $margin : 0)};
+  width: 22px;
+  height: 22px;
+  font-family: PretendardBold, sans-serif;
+  text-align: center;
+  border-radius: 50%;
+  ${({ $status }) =>
+    $status === 1 &&
+    css`
+      color: ${theme.colors.whiteColor};
+      background-color: ${theme.colors.activeOrange};
+    `}
+
+  ${({ $status }) =>
+    $status === 2 &&
+    css`
+      color: ${theme.colors.blackColor};
+      background-color: ${theme.colors.pointYellow};
+    `}
+`;
+
 export const MobileWrapper = styled.main<{
   $isFooter?: boolean;
   $padding?: string;
