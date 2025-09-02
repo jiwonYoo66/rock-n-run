@@ -50,12 +50,7 @@ const CardItem = ({ data, index }: any) => {
   return (
     <Card key={index}>
       <ImageWrapper>
-        <Image
-          src="/assets/images/noImageArticle.png"
-          alt="이벤트 이미지"
-          objectFit="cover"
-          fill
-        />
+        <Image src="/assets/dummy/event_post1.svg" alt="이벤트 이미지" fill />
       </ImageWrapper>
       <InfoWrapper>
         <Info>
@@ -167,7 +162,6 @@ const Description = styled.div`
 const Date = styled.div`
   ${theme.typography.bodyMobile}
   display: flex;
-  align-items: center;
   gap: 4px;
   font-family: PretendardMedium, sans-serif;
   ${theme.devices.desktop} {

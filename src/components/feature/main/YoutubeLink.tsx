@@ -7,6 +7,7 @@ import { Navigation } from "swiper/modules";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 import theme from "@styles/theme";
+import { getYoutubeThumbnailUrl } from "@utils/commons";
 
 import { FlexBox } from "@components/share/commons/commons.style";
 import Headline from "@components/layout/headline/Headline";
@@ -29,6 +30,7 @@ const YoutubeLink = () => {
     swiperRef.current.navigation.update();
   }, [swiperRef.current, prevRef.current, nextRef.current]);
 
+  // https://youtu.be/N514fqXmMTI
   return (
     <Wrapper>
       <Headline
@@ -50,9 +52,8 @@ const YoutubeLink = () => {
             <SwiperSlide key={index}>
               <ImageWrapper>
                 <Image
-                  src="/assets/images/noImageArticle.png"
+                  src={getYoutubeThumbnailUrl("https://youtu.be/N514fqXmMTI")}
                   alt="이벤트 이미지"
-                  objectFit="cover"
                   fill
                 />
               </ImageWrapper>
@@ -89,15 +90,18 @@ const Wrapper = styled.div`
 const LinkWrapper = styled.div`
   padding: 24px;
   width: 100%;
-  /* height: 395px; */
   border: ${theme.colors.blackColor} 1px solid;
 `;
 
 const ImageWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   aspect-ratio: 16/9;
   ${theme.devices.desktop} {
-    height: 304px;
+    max-width: 540px;
   }
 `;
 

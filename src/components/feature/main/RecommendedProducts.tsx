@@ -53,18 +53,11 @@ const CardItem = ({ data, index }: any) => {
   return (
     <Card key={index}>
       <ImageWrapper>
-        <Image
-          src="/assets/images/noImageArticle.png"
-          alt="이벤트 이미지"
-          objectFit="cover"
-          fill
-        />
+        <Image src="/assets/dummy/product_shoe.svg" alt="이벤트 이미지" fill />
       </ImageWrapper>
       <Description>
         <BrandName>ONRUNNING</BrandName>
-        <ProductName>
-          온 남성 클라우드 비스타 2 BLACK BLACK 온 남성 클라우드 비스타 2{" "}
-        </ProductName>
+        <ProductName>온 남성 클라우드 비스타 2 BLACK BLACK</ProductName>
         <FlexBox $justifyContent="space-between" $margin="12px 0 0">
           <Price>
             <Percent>56%</Percent> {(159000).toLocaleString()}원
@@ -129,8 +122,12 @@ const Card = styled.div`
 
 const ImageWrapper = styled.div`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: 360px;
+  max-height: 360px;
+  aspect-ratio: 295/360;
 `;
 
 const Description = styled.div`

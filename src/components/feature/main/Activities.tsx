@@ -14,9 +14,8 @@ const Activities = () => {
           <Price>{(30000).toLocaleString()}원</Price>
         </Description>
         <Image
-          src="/assets/images/noImageArticle.png"
-          alt="이벤트 이미지"
-          objectFit="cover"
+          src="/assets/dummy/project_post1.svg"
+          alt="프로젝트 소개 이미지"
           fill
         />
       </List>
@@ -27,9 +26,8 @@ const Activities = () => {
           <Price>{(30000).toLocaleString()}원</Price>
         </Description>
         <Image
-          src="/assets/images/noImageArticle.png"
-          alt="이벤트 이미지"
-          objectFit="cover"
+          src="/assets/dummy/project_post1.svg"
+          alt="프로젝트 소개 이미지"
           fill
         />
       </List>
@@ -40,9 +38,8 @@ const Activities = () => {
           <Price>{(30000).toLocaleString()}원</Price>
         </Description>
         <Image
-          src="/assets/images/noImageArticle.png"
-          alt="이벤트 이미지"
-          objectFit="cover"
+          src="/assets/dummy/project_post1.svg"
+          alt="프로젝트 소개 이미지"
           fill
         />
       </List>
@@ -104,7 +101,7 @@ const Description = styled.div`
   width: 100%;
   font-family: PretendardSemiBold, sans-serif;
   color: ${theme.colors.whiteColor};
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.7); */
   z-index: 10;
 `;
 
