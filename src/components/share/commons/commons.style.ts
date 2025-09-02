@@ -6,7 +6,7 @@ import { FlexBoxType } from "@utils/types";
 export const Wrapper = styled.main<{ $padding?: string }>`
   position: relative;
   margin: 0 auto;
-  padding: ${({ $padding }) => ($padding ? $padding : "20px 16px")};
+  padding: ${({ $padding }) => ($padding ? $padding : "0 16px")};
   max-width: 719px;
   min-height: calc(100vh - 48px - 485px);
   font-family: PretendardRegular, sans-serif;
@@ -14,6 +14,7 @@ export const Wrapper = styled.main<{ $padding?: string }>`
     max-width: 1079px;
   }
   ${theme.devices.desktop} {
+    padding: 0;
     max-width: 1640px;
     min-height: calc(100vh - 105px - 425px);
   }

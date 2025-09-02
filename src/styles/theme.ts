@@ -31,6 +31,7 @@ const colors = {
   ultraLightGrayBgColor: "#F3F3F3", // bg
   whiteHoverColor: "#F0F0F0",
   disabledColor: "#f2f2f2",
+  paginationColor: "#CFCFCF",
 
   ///// MainPage /////
   // BG

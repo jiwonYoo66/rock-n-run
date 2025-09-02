@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import styled, { css } from "styled-components";
 
@@ -7,12 +7,20 @@ import theme from "@styles/theme";
 
 import { FlexBox } from "@components/share/commons/commons.style";
 
-// type TabMenuProps = {
-//     setSelectedTab: Dispatch<SetStateAction<string>>;
-//     selectedTab: string;
-//     options: string[];
-//     margin?: string;
-// };
+type HeadlineProps = {
+  MORE?: boolean;
+  BORDER?: boolean;
+  TAB?: boolean;
+  title: string;
+  imgSrc?: string;
+  paddingMobile?: string;
+  paddingPc?: string;
+  onClick?: () => void;
+  setSelectedTab?: Dispatch<SetStateAction<string>>;
+  selectedTab?: string;
+  options?: string[];
+  margin?: string;
+};
 
 const Headline = ({
   title = "",
@@ -26,7 +34,7 @@ const Headline = ({
   MORE = false,
   BORDER = false,
   TAB = false,
-}: any) => {
+}: HeadlineProps) => {
   return (
     <Wrapper
       $paddingMobile={paddingMobile}
@@ -44,7 +52,9 @@ const Headline = ({
                   id={`${index}-filter`}
                   name="filter"
                   value={option}
-                  onChange={(e) => setSelectedTab(e.target.value)}
+                  onChange={(e) =>
+                    setSelectedTab && setSelectedTab(e.target.value)
+                  }
                   checked={option === selectedTab}
                 />
                 <Label htmlFor={`${index}-filter`}>{option}</Label>

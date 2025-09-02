@@ -342,3 +342,10 @@ export const dayNumToString = (day: number) => {
       return day;
   }
 };
+
+export const getPageIndex = (currentPage: number, take: number) => {
+  return (currentPage * take - take) % (take * 10);
+};
+export const getPageGroup = (currentPage: number, take: number) => {
+  return Math.floor((currentPage * take - take) / (take * 10)) * (take * 10);
+};
