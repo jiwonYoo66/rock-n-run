@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useCallback } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import styled, { css } from "styled-components";
 import dayjs from "dayjs";
@@ -12,8 +11,6 @@ import { useWindowSize } from "@hooks/useWindowSize";
 import { dayNumToString } from "@utils/commons";
 import { getReservationType } from "@lib/enum";
 import { EVENTS_DATA } from "@lib/DUMMY";
-
-import { Container } from "@components/share/commons/commons.style";
 
 const MainEvents = () => {
   const videoRefs = useRef<HTMLVideoElement[]>([]);
@@ -58,10 +55,10 @@ const MainEvents = () => {
     videoRefs.current[index].currentTime = 1;
   };
 
-  /** Mobile UI (Swiper) */
-  if (width < 1080) {
-    return (
-      <Container $padding="18px 16px 0" $height="760px">
+  return (
+    <>
+      {/* mobile, tablet */}
+      <Container>
         <Swiper
           slidesPerView={1}
           centeredSlides
@@ -77,27 +74,24 @@ const MainEvents = () => {
           ))}
         </Swiper>
       </Container>
-    );
-  }
-
-  /** PC UI (List with Hover Event) */
-  return (
-    <Wrapper>
-      {EVENTS_DATA.slice(0, 4).map((data, index) => (
-        <List
-          key={data?.id}
-          $listLength={EVENTS_DATA.length >= 4 ? 4 : EVENTS_DATA.length}
-          onMouseEnter={() => handleHover(index)}
-          onMouseLeave={() => handleLeave(index)}
-        >
-          <EventCard data={data} index={index} setVideoRef={setVideoRef} />
-        </List>
-      ))}
-    </Wrapper>
+      {/* pc */}
+      <Wrapper>
+        {EVENTS_DATA.slice(0, 4).map((data, index) => (
+          <List
+            key={data?.id}
+            $listLength={EVENTS_DATA.length >= 4 ? 4 : EVENTS_DATA.length}
+            onMouseEnter={() => handleHover(index)}
+            onMouseLeave={() => handleLeave(index)}
+          >
+            <EventCard data={data} index={index} setVideoRef={setVideoRef} />
+          </List>
+        ))}
+      </Wrapper>
+    </>
   );
 };
 
-export default dynamic(() => Promise.resolve(MainEvents), { ssr: false });
+export default MainEvents;
 
 /** 공통 Event Card */
 const EventCard = ({
@@ -147,14 +141,29 @@ const EventCard = ({
 };
 
 const Wrapper = styled.ul`
-  display: flex;
-  width: 100%;
-  height: 793px;
-  border-bottom: ${theme.colors.blackColor} 1px solid;
-  border-right: ${theme.colors.blackColor} 1px solid;
-  border-left: ${theme.colors.blackColor} 1px solid;
+  display: none;
+  ${theme.devices.desktop} {
+    display: flex;
+    width: 100%;
+    height: 793px;
+    border-bottom: ${theme.colors.blackColor} 1px solid;
+    border-right: ${theme.colors.blackColor} 1px solid;
+    border-left: ${theme.colors.blackColor} 1px solid;
+  }
 `;
 
+const Container = styled.div`
+  position: relative;
+  margin: 0 auto;
+  padding: 18px 16px 0;
+  width: 100%;
+  max-width: 1079px;
+  height: 760px;
+  font-family: PretendardRegular, sans-serif;
+  ${theme.devices.desktop} {
+    display: none;
+  }
+`;
 const List = styled.li<{ $listLength?: number }>`
   flex: 1;
   width: ${({ $listLength }) => `calc(100% / ${$listLength})`};

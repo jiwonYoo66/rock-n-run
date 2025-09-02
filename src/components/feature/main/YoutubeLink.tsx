@@ -1,20 +1,17 @@
 "use client";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRef, useEffect } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 import theme from "@styles/theme";
-import { useWindowSize } from "@hooks/useWindowSize";
 
 import { FlexBox } from "@components/share/commons/commons.style";
 import Headline from "@components/layout/headline/Headline";
 
 const YoutubeLink = () => {
-  const { width } = useWindowSize();
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const swiperRef = useRef<any>(null);
@@ -36,7 +33,8 @@ const YoutubeLink = () => {
     <Wrapper>
       <Headline
         title="장수TV"
-        padding={width < 1080 ? "52px 0 16px" : "60px 0 32px"}
+        paddingMobile={"52px 0 16px"}
+        paddingPc={"60px 0 32px"}
         onClick={() => null}
         MORE
       />
@@ -77,7 +75,7 @@ const YoutubeLink = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(YoutubeLink), { ssr: false });
+export default YoutubeLink;
 
 const Wrapper = styled.div`
   padding: 0 16px;

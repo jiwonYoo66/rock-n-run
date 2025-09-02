@@ -1,7 +1,6 @@
 "use client";
 import { ChangeEvent, useState } from "react";
-import dynamic from "next/dynamic";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import theme from "@styles/theme";
@@ -25,52 +24,51 @@ const HallOfFame = () => {
       <Headline
         title="명예의 전당"
         imgSrc="./assets/icons/icon_trophy.svg"
-        padding={width < 1080 ? "52px 16px 16px" : "60px 0 20px"}
+        paddingMobile={"52px 16px 16px"}
+        paddingPc={"60px 0 20px"}
         onClick={() => null}
         MORE
       />
-
-      {width < 1080 ? (
-        <Wrapper>
-          <Swiper
-            slidesPerView={width >= 720 ? 2 : 1}
-            // centeredSlides
-            className="mySwiper"
-            style={{ padding: "0 16px" }}
-          >
-            {[...Array(6)].map((data, index) => (
-              <SwiperSlide key={index}>
-                <CardItem data={data} index={index} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </Wrapper>
-      ) : (
-        <>
-          <StyledSelect
-            value={filter}
-            options={[{ title: "종합순위", value: 1 }]}
-            onChange={onChange}
-            width={84}
-            height={22}
-            padding="0"
-            fontFamily="PretendardMedium"
-            fontSize={18}
-            margin="0 0 20px"
-            DATA_VALUE
-          />
-          <CardContainer>
-            {[...Array(6)].map((data, index) => (
-              <CardItem key={index} data={data} index={index} />
-            ))}
-          </CardContainer>
-        </>
-      )}
+      {/* mobile, tablet */}
+      <MobileWrapper>
+        <Swiper
+          slidesPerView={width >= 720 ? 2 : 1}
+          // centeredSlides
+          className="mySwiper"
+          style={{ padding: "0 16px" }}
+        >
+          {[...Array(6)].map((data, index) => (
+            <SwiperSlide key={index}>
+              <CardItem data={data} index={index} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </MobileWrapper>
+      {/* pc */}
+      <PcWrapper>
+        <StyledSelect
+          value={filter}
+          options={[{ title: "종합순위", value: 1 }]}
+          onChange={onChange}
+          width={84}
+          height={22}
+          padding="0"
+          fontFamily="PretendardMedium"
+          fontSize={18}
+          margin="0 0 20px"
+          DATA_VALUE
+        />
+        <CardContainer>
+          {[...Array(6)].map((data, index) => (
+            <CardItem key={index} data={data} index={index} />
+          ))}
+        </CardContainer>
+      </PcWrapper>
     </Wrapper>
   );
 };
 
-export default dynamic(() => Promise.resolve(HallOfFame), { ssr: false });
+export default HallOfFame;
 
 const CardItem = ({ data, index }: any) => {
   return (
@@ -110,6 +108,14 @@ const CardItem = ({ data, index }: any) => {
 
 const Wrapper = styled.section`
   width: 100%;
+  ${theme.devices.desktop} {
+    width: calc((100% - 308px) / 8 * 5 + 176px);
+  }
+`;
+
+const MobileWrapper = styled.div`
+  display: block;
+  width: 100%;
   .swiper-slide {
     border-top: ${theme.colors.blackColor} 1px solid;
     border-bottom: ${theme.colors.blackColor} 1px solid;
@@ -120,7 +126,14 @@ const Wrapper = styled.section`
     }
   }
   ${theme.devices.desktop} {
-    width: calc((100% - 308px) / 8 * 5 + 176px);
+    display: none;
+  }
+`;
+
+const PcWrapper = styled.div`
+  display: none;
+  ${theme.devices.desktop} {
+    display: block;
   }
 `;
 

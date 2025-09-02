@@ -1,20 +1,10 @@
 "use client";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import styled, { css } from "styled-components";
-import dayjs from "dayjs";
 
 import theme from "@styles/theme";
-import { useWindowSize } from "@hooks/useWindowSize";
-
-import {
-  Container,
-  StatusBadge,
-} from "@components/share/commons/commons.style";
-import Headline from "@components/layout/headline/Headline";
 
 const Activities = () => {
-  const { width } = useWindowSize();
   return (
     <Wrapper>
       <List>
@@ -32,6 +22,10 @@ const Activities = () => {
       </List>
       <List>
         <Tag $status={2}>티켓 품절</Tag>
+        <Description>
+          <Title>장수산멍: 1박 2일 웰니스 캠프</Title>
+          <Price>{(30000).toLocaleString()}원</Price>
+        </Description>
         <Image
           src="/assets/images/noImageArticle.png"
           alt="이벤트 이미지"
@@ -41,6 +35,10 @@ const Activities = () => {
       </List>
       <List>
         <Tag $status={1}>사전 예약중</Tag>
+        <Description>
+          <Title>장수산멍: 1박 2일 웰니스 캠프</Title>
+          <Price>{(30000).toLocaleString()}원</Price>
+        </Description>
         <Image
           src="/assets/images/noImageArticle.png"
           alt="이벤트 이미지"
@@ -52,15 +50,17 @@ const Activities = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(Activities), { ssr: false });
+export default Activities;
 
 const Wrapper = styled.section`
   display: flex;
   flex-wrap: nowrap;
+  gap: 16px;
   padding: 52px 16px 0;
   width: 100%;
   overflow: hidden;
   ${theme.devices.desktop} {
+    gap: 0;
     padding: 60px 0 0;
   }
 `;
@@ -69,9 +69,6 @@ const List = styled.div`
   position: relative;
   flex: 0 0 100%;
   aspect-ratio: 1;
-  ${theme.devices.tablet} {
-    flex: 0 0 calc(100% / 2);
-  }
   ${theme.devices.desktop} {
     flex: 0 0 calc(100% / 3);
   }
@@ -107,7 +104,7 @@ const Description = styled.div`
   width: 100%;
   font-family: PretendardSemiBold, sans-serif;
   color: ${theme.colors.whiteColor};
-  background-color: ${theme.colors.blackColor};
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 10;
 `;
 

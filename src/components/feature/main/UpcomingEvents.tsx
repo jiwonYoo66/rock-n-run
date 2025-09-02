@@ -1,53 +1,50 @@
 "use client";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import styled, { css } from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BiCalendar } from "react-icons/bi";
 
 import theme from "@styles/theme";
-import { useWindowSize } from "@hooks/useWindowSize";
 
 import Headline from "@components/layout/headline/Headline";
 
 const UpcomingEvents = () => {
-  const { width } = useWindowSize();
   return (
     <Wrapper>
       <Headline
         title="오픈예정"
-        padding={width < 1080 ? "52px 16px 16px" : "60px 0 32px"}
+        paddingMobile={"52px 16px 16px"}
+        paddingPc={"60px 0 32px"}
         onClick={() => null}
         MORE
       />
 
-      {width < 1080 ? (
-        <Wrapper>
-          <Swiper
-            slidesPerView={1.3}
-            // centeredSlides
-            className="mySwiper"
-            style={{ padding: "0 16px" }}
-          >
-            {[...Array(6)].map((data, index) => (
-              <SwiperSlide key={index}>
-                <CardItem data={data} index={index} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </Wrapper>
-      ) : (
-        <CardContainer>
-          {[...Array(2)].map((data, index) => (
-            <CardItem key={index} data={data} index={index} />
+      {/* mobile, tablet */}
+      <MobileWrapper>
+        <Swiper
+          slidesPerView={1.3}
+          // centeredSlides
+          className="mySwiper"
+          style={{ padding: "0 16px" }}
+        >
+          {[...Array(6)].map((data, index) => (
+            <SwiperSlide key={index}>
+              <CardItem data={data} index={index} />
+            </SwiperSlide>
           ))}
-        </CardContainer>
-      )}
+        </Swiper>
+      </MobileWrapper>
+      {/* pc */}
+      <CardContainer>
+        {[...Array(2)].map((data, index) => (
+          <CardItem key={index} data={data} index={index} />
+        ))}
+      </CardContainer>
     </Wrapper>
   );
 };
 
-export default dynamic(() => Promise.resolve(UpcomingEvents), { ssr: false });
+export default UpcomingEvents;
 
 const CardItem = ({ data, index }: any) => {
   return (
@@ -76,7 +73,14 @@ const CardItem = ({ data, index }: any) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
+  width: 100%;
+  ${theme.devices.desktop} {
+    width: calc((100% - 308px) / 8 * 3 + 88px);
+  }
+`;
+
+const MobileWrapper = styled.div`
   width: 100%;
   .swiper-slide {
     border-top: ${theme.colors.blackColor} 1px solid;
@@ -88,13 +92,16 @@ const Wrapper = styled.div`
     }
   }
   ${theme.devices.desktop} {
-    width: calc((100% - 308px) / 8 * 3 + 88px);
+    display: none;
   }
 `;
 
 const CardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: none;
+  ${theme.devices.desktop} {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const Card = styled.div`

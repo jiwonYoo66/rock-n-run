@@ -1,22 +1,20 @@
 "use client";
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import styled, { css } from "styled-components";
 import dayjs from "dayjs";
 
 import theme from "@styles/theme";
-import { useWindowSize } from "@hooks/useWindowSize";
 
 import { StatusBadge } from "@components/share/commons/commons.style";
 import Headline from "@components/layout/headline/Headline";
 
 const NoticeFaq = () => {
-  const { width } = useWindowSize();
   const [selectedTab, setSelectedTab] = useState("공지사항");
   return (
     <Wrapper>
       <Headline
-        padding={width < 1080 ? "52px 0 16px" : "60px 0 32px"}
+        paddingMobile={"52px 0 16px"}
+        paddingPc={"60px 0 32px"}
         onClick={() => null}
         options={["공지사항", "자주묻는질문"]}
         selectedTab={selectedTab}
@@ -47,7 +45,7 @@ const NoticeFaq = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(NoticeFaq), { ssr: false });
+export default NoticeFaq;
 
 const Wrapper = styled.section`
   padding: 0 16px;

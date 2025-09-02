@@ -17,7 +17,8 @@ import { FlexBox } from "@components/share/commons/commons.style";
 const Headline = ({
   title = "",
   imgSrc = "",
-  padding = "80px 0 32px",
+  paddingMobile = "52px 0 20px",
+  paddingPc = "80px 0 32px",
   onClick = () => null,
   options = [],
   setSelectedTab,
@@ -27,7 +28,11 @@ const Headline = ({
   TAB = false,
 }: any) => {
   return (
-    <Wrapper $padding={padding} $border={BORDER}>
+    <Wrapper
+      $paddingMobile={paddingMobile}
+      $paddingPc={paddingPc}
+      $border={BORDER}
+    >
       <Title>
         {/* {title} */}
         {TAB ? (
@@ -62,14 +67,18 @@ const Headline = ({
 
 export default Headline;
 
-const Wrapper = styled.div<{ $padding?: string; $border?: boolean }>`
+const Wrapper = styled.div<{
+  $paddingMobile?: string;
+  $paddingPc?: string;
+  $border?: boolean;
+}>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ $padding }) => ($padding ? $padding : "52px 0 20px")};
+  padding: ${({ $paddingMobile }) => $paddingMobile};
 
   ${theme.devices.desktop} {
-    padding: ${({ $padding }) => ($padding ? $padding : "80px 0 32px")};
+    padding: ${({ $paddingPc }) => $paddingPc};
 
     ${({ $border }) =>
       $border &&
