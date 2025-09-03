@@ -1,18 +1,19 @@
 "use client";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { BiCalendar } from "react-icons/bi";
 
-import * as T from "./tournament.style";
+import * as P from "./program.style";
 import useCustomSearchParams from "@hooks/useCustomSearchParams";
 import usePagination from "@hooks/usePagination";
 import { paths } from "@lib/paths";
 
 import { Wrapper } from "@components/share/commons/commons.style";
 import Headline from "@components/layout/headline/Headline";
-import TournamentCard from "@components/feature/tournament/TournamentCard";
 import Pagination from "@components/layout/pagination/Pagination";
 
-const Tournament = () => {
+const Program = () => {
   const router = useRouter();
   const { searchParams, setSearchParams } = useCustomSearchParams();
   const page = Number(searchParams.page) || 1;
@@ -32,7 +33,7 @@ const Tournament = () => {
   // }, [state?.pageInfo]);
 
   const handleMoveToDetail = (id: number) => {
-    router.push(`/${paths.TOURNAMENT}/${id}`);
+    router.push(`/${paths.PROGRAM}/${id}`);
     // navigate(`/faq/${id}`, {
     //     state: {
     //         pathname,
@@ -64,15 +65,15 @@ const Tournament = () => {
     lists: [], // TODO: 임시
     id: "id", // TODO: 임시
   });
-
+  console.log(page);
   return (
     <Wrapper>
-      <Headline title="락앤런 대회" />
-      <T.Container>
+      <Headline title="정기 프로그램" />
+      <P.Container>
         {[...Array(8)].map((data, index) => (
-          <TournamentCard key={index} />
+          <Card key={index} />
         ))}
-      </T.Container>
+      </P.Container>
       <Pagination
         take={take}
         pageIndex={pageIndex}
@@ -90,4 +91,25 @@ const Tournament = () => {
   );
 };
 
-export default Tournament;
+const Card = () => {
+  return (
+    <P.CardWrapper>
+      <P.ImageWrapper>
+        <Image
+          src="/assets/dummy/tour_post1.png"
+          alt="프로젝트 소개 이미지"
+          fill
+        />
+        <P.StatusBadge $status={1}>사전 예약중</P.StatusBadge>
+      </P.ImageWrapper>
+      <P.Description>
+        <P.Title>2025 장수 쿨밸리 트레일 레이스</P.Title>
+        <P.Date>
+          <BiCalendar size={20} /> 대회 시작 일시 2025. 09. 11(월) 14:00
+        </P.Date>
+      </P.Description>
+    </P.CardWrapper>
+  );
+};
+
+export default Program;

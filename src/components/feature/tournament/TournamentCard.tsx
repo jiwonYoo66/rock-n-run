@@ -1,62 +1,51 @@
 "use client";
+import Image from "next/image";
 import styled, { css } from "styled-components";
+import { BiCalendar } from "react-icons/bi";
 
 import theme from "@styles/theme";
 
-export const Container = styled.ul`
-  display: grid;
-  gap: 32px;
-  padding: 0 0 52px;
+const TournamentCard = ({ data }: any) => {
+  return (
+    <Card>
+      <ImageWrapper>
+        <Image
+          src="/assets/dummy/tour_post1.png"
+          alt="프로젝트 소개 이미지"
+          fill
+        />
+        <StatusBadge $status={1}>사전 예약중</StatusBadge>
+      </ImageWrapper>
+      <Description>
+        <Title>2025 장수 쿨밸리 트레일 레이스</Title>
+        <Date>
+          <BiCalendar size={20} /> 대회 시작 일시 2025. 09. 11(월) 14:00
+        </Date>
+      </Description>
+    </Card>
+  );
+};
 
-  border-bottom: ${theme.colors.blackColor} 1px solid;
-  ${theme.devices.tablet} {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 44px;
-  }
-  ${theme.devices.desktop} {
-    grid-template-columns: repeat(4, minmax(237px, 1fr));
-    gap: 32px 44px;
-    padding: 32px 0 60px;
-    border-top: ${theme.colors.blackColor} 1px solid;
-  }
-  /* display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 0 0 52px;
-  border-bottom: ${theme.colors.blackColor} 1px solid;
-  ${theme.devices.tablet} {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 32px 44px;
-  }
-  ${theme.devices.desktop} {
-    justify-content: space-between;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 32px 44px;
-    padding: 32px 0 60px;
-    border-top: ${theme.colors.blackColor} 1px solid;
-  } */
-`;
+export default TournamentCard;
 
-export const CardWrapper = styled.li`
+const Card = styled.li`
   width: 100%;
-  ${theme.devices.tablet} {
+  /* ${theme.devices.tablet} {
     width: calc((100% - 44px) / 2);
   }
   ${theme.devices.desktop} {
     width: calc((100% - 132px) / 4);
-  }
+  } */
 `;
 
-export const ImageWrapper = styled.div`
+const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   aspect-ratio: 343/430;
   /* border: ${theme.colors.blackColor} 1px solid; */
 `;
 
-export const StatusBadge = styled.span<{ $status?: number }>`
+const StatusBadge = styled.span<{ $status?: number }>`
   position: absolute;
   top: 0;
   right: 0;
@@ -91,7 +80,7 @@ export const StatusBadge = styled.span<{ $status?: number }>`
     `}
 `;
 
-export const Description = styled.div`
+const Description = styled.div`
   margin: 16px 0 0;
   padding: 16px 0;
   width: 100%;
@@ -103,7 +92,7 @@ export const Description = styled.div`
     padding: 24px 0;
   }
 `;
-export const Title = styled.h3`
+const Title = styled.h3`
   ${theme.typography.bodyDesktop}
   margin: 0 0 12px;
   font-family: PretendardSemiBold, sans-serif;
@@ -115,7 +104,7 @@ export const Title = styled.h3`
     margin: 0 0 20px;
   }
 `;
-export const Date = styled.div`
+const Date = styled.div`
   ${theme.typography.headline2}
   display: flex;
   gap: 4px;

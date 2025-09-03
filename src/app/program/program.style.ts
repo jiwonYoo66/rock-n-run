@@ -4,22 +4,7 @@ import styled, { css } from "styled-components";
 import theme from "@styles/theme";
 
 export const Container = styled.ul`
-  display: grid;
-  gap: 32px;
-  padding: 0 0 52px;
-
-  border-bottom: ${theme.colors.blackColor} 1px solid;
-  ${theme.devices.tablet} {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 44px;
-  }
-  ${theme.devices.desktop} {
-    grid-template-columns: repeat(4, minmax(237px, 1fr));
-    gap: 32px 44px;
-    padding: 32px 0 60px;
-    border-top: ${theme.colors.blackColor} 1px solid;
-  }
-  /* display: flex;
+  display: flex;
   flex-direction: column;
   gap: 32px;
   padding: 0 0 52px;
@@ -36,7 +21,7 @@ export const Container = styled.ul`
     gap: 32px 44px;
     padding: 32px 0 60px;
     border-top: ${theme.colors.blackColor} 1px solid;
-  } */
+  }
 `;
 
 export const CardWrapper = styled.li`

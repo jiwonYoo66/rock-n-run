@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { ApolloWrapper } from "@apollo-client/ApolloProvider";
 import StyledComponentsProvider from "@styles/StyledComponentsProvider";
 import Header from "@components/layout/header/Header";
@@ -28,11 +29,44 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <style>
+          {`body {
+                top: 0 !important;
+            }
+            body > .skiptranslate > iframe {
+                display: none;
+            }
+            .skiptranslate.goog-te-gadget {
+                display: none;
+            }`}
+        </style>
+      </head>
       <body>
         <ApolloWrapper>
           <StyledComponentsProvider>
+            <div id="google_translate_element"></div>
+            <Script
+              src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+              strategy="afterInteractive"
+            />
+            <Script id="google-translate-init" strategy="afterInteractive">
+              {`
+                function googleTranslateElementInit() {
+                  new google.translate.TranslateElement(
+                    {
+                      pageLanguage: 'auto',
+                      includedLanguages: 'en,ko',
+                      layout: google.translate.TranslateElement.InlineLayout.VERTICAL,
+                    },
+                    'google_translate_element'
+                  );
+                }
+              `}
+            </Script>
             <Header />
             {children}
+
             <Footer />
           </StyledComponentsProvider>
         </ApolloWrapper>

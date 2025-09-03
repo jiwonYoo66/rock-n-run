@@ -1,18 +1,49 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { useQuery, useReactiveVar } from "@apollo/client/react";
 import styled from "styled-components";
 
 import theme from "@styles/theme";
 import { paths } from "@lib/paths";
 import { userVar } from "@store/index";
+import { getCookie } from "@utils/cookies";
 
 import { Container } from "@components/share/commons/commons.style";
 
 const Header = () => {
   const userInfo = useReactiveVar(userVar);
+  const [langChange, setLangChange] = useState(false);
+
+  useEffect(() => {
+    if (getCookie("googtrans")?.includes("en")) {
+      setLangChange(true);
+    } else {
+      setLangChange(false);
+    }
+  }, []);
+
+  const langChangeHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    const { value } = e.currentTarget;
+
+    const element = document.querySelector(
+      ".goog-te-combo"
+    ) as HTMLSelectElement;
+
+    if (element) {
+      element.value = value;
+      element.dispatchEvent(new Event("change"));
+    }
+
+    if (value.includes("ko")) {
+      setLangChange(false);
+      // window.location.reload();
+      // return;
+    } else {
+      setLangChange(true);
+    }
+  };
 
   // const { data, loading } = useQuery<Pick<Query, "seeHPHospitalInfo">>(
   //   SEE_HP_HOSPITAL_INFO,
@@ -87,7 +118,28 @@ const Header = () => {
             <Link href={`/${paths.SHOP}`}>스토어</Link>
             <Link href={`/${paths.NEWS}`}>소식</Link>
           </Navigation>
-          <LangButton>ENG</LangButton>
+          {langChange ? (
+            <LangButton value="ko" onClick={langChangeHandler}>
+              <Image
+                width={30}
+                height={18}
+                src="./assets/icons/KOR.svg"
+                alt="language change icon"
+              />
+            </LangButton>
+          ) : (
+            <LangButton value="en" onClick={langChangeHandler}>
+              <Image
+                width={30}
+                height={18}
+                src="./assets/icons/ENG.svg"
+                alt="language change icon"
+              />
+            </LangButton>
+          )}
+          {/* <LangButton value="en" onClick={langChangeHandler}>
+            ENG
+          </LangButton> */}
 
           <MenuButton>
             <Image
@@ -224,6 +276,7 @@ const LangButton = styled.button`
   color: ${theme.colors.whiteColor};
   background-color: ${theme.colors.blackColor};
   font-family: PretendardMedium, sans-serif;
+  line-height: 1;
   ${theme.devices.desktop} {
     display: block;
   }
