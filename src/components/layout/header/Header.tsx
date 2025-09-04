@@ -119,27 +119,22 @@ const Header = () => {
             <Link href={`/${paths.NEWS}`}>소식</Link>
           </Navigation>
           {langChange ? (
-            <LangButton value="ko" onClick={langChangeHandler}>
-              <Image
-                width={30}
-                height={18}
-                src="./assets/icons/KOR.svg"
-                alt="language change icon"
-              />
+            <LangButton
+              value="ko"
+              onClick={langChangeHandler}
+              className="notranslate"
+            >
+              KOR
             </LangButton>
           ) : (
-            <LangButton value="en" onClick={langChangeHandler}>
-              <Image
-                width={30}
-                height={18}
-                src="./assets/icons/ENG.svg"
-                alt="language change icon"
-              />
+            <LangButton
+              value="en"
+              onClick={langChangeHandler}
+              className="notranslate"
+            >
+              ENG
             </LangButton>
           )}
-          {/* <LangButton value="en" onClick={langChangeHandler}>
-            ENG
-          </LangButton> */}
 
           <MenuButton>
             <Image
@@ -276,7 +271,7 @@ const LangButton = styled.button`
   color: ${theme.colors.whiteColor};
   background-color: ${theme.colors.blackColor};
   font-family: PretendardMedium, sans-serif;
-  line-height: 1;
+  /* line-height: 1; */
   ${theme.devices.desktop} {
     display: block;
   }
