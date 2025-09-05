@@ -5,16 +5,16 @@ import { BiCalendar } from "react-icons/bi";
 
 import theme from "@styles/theme";
 
-const ProgramCard = ({ data }: any) => {
+const NewsCard = ({ data }: any) => {
     return (
         <Card>
             <ImageWrapper>
                 <Image
-                    src="/assets/dummy/program_post1.svg"
+                    src="/assets/dummy/news_post1.svg"
                     alt="프로젝트 소개 이미지"
                     fill
                 />
-                <StatusBadge $status={1}>사전 예약중</StatusBadge>
+                {/* <StatusBadge $status={1}>사전 예약중</StatusBadge> */}
             </ImageWrapper>
             <Description>
                 <Title>2025 장수 쿨밸리 트레일 레이스</Title>
@@ -27,7 +27,7 @@ const ProgramCard = ({ data }: any) => {
     );
 };
 
-export default ProgramCard;
+export default NewsCard;
 
 const Card = styled.li`
     width: 100%;

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import useCustomSearchParams from "@hooks/useCustomSearchParams";
 import usePagination from "@hooks/usePagination";
@@ -11,10 +11,10 @@ import {
     CardContainer,
 } from "@components/share/commons/commons.style";
 import Headline from "@components/layout/headline/Headline";
-import TournamentCard from "@components/feature/tournament/TournamentCard";
+import NewsCard from "@components/feature/news/NewsCard";
 import Pagination from "@components/layout/pagination/Pagination";
 
-const Tournament = () => {
+const News = () => {
     const router = useRouter();
     const { searchParams, setSearchParams } = useCustomSearchParams();
     const page = Number(searchParams.page) || 1;
@@ -34,7 +34,7 @@ const Tournament = () => {
     // }, [state?.pageInfo]);
 
     const handleMoveToDetail = (id: number) => {
-        router.push(`/${paths.TOURNAMENT}/${id}`);
+        router.push(`/${paths.PROGRAM}/${id}`);
         // navigate(`/faq/${id}`, {
         //     state: {
         //         pathname,
@@ -69,10 +69,10 @@ const Tournament = () => {
 
     return (
         <Wrapper>
-            <Headline title="락앤런 대회" />
+            <Headline title="장수 뉴스" />
             <CardContainer>
                 {[...Array(8)].map((data, index) => (
-                    <TournamentCard key={index} />
+                    <NewsCard key={index} />
                 ))}
             </CardContainer>
             <Pagination
@@ -92,4 +92,4 @@ const Tournament = () => {
     );
 };
 
-export default Tournament;
+export default News;
