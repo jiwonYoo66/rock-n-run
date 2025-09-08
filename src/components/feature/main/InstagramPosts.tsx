@@ -1,16 +1,11 @@
 "use client";
-import { useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import styled, { css } from "styled-components";
-import dayjs from "dayjs";
+import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
 import theme from "@styles/theme";
-import { useWindowSize } from "@hooks/useWindowSize";
-import { dayNumToString } from "@utils/commons";
-import { getReservationType } from "@lib/enum";
 import { EVENTS_DATA } from "@lib/DUMMY";
 
 import Headline from "@components/layout/headline/Headline";
@@ -69,7 +64,7 @@ const EventCard = ({
   index: number;
 }) => {
   return (
-    <LinkWrapper href={data?.url}>
+    <>
       <ContentArea>
         <Image
           src="/assets/dummy/insta_post1.svg"
@@ -78,7 +73,7 @@ const EventCard = ({
         />
       </ContentArea>
       <Title>{data?.title || "-"}</Title>
-    </LinkWrapper>
+    </>
   );
 };
 
@@ -93,7 +88,8 @@ const Wrapper = styled.section`
 const PcWrapper = styled.ul`
   display: none;
   ${theme.devices.desktop} {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(237px, 1fr));
     gap: 44px;
     width: 100%;
   }
@@ -111,12 +107,6 @@ const Container = styled.div`
   }
 `;
 const List = styled.li<{ $listLength?: number }>`
-  flex: 1;
-  width: ${({ $listLength }) => `calc(100% / ${$listLength})`};
-  height: 100%;
-`;
-
-const LinkWrapper = styled(Link)`
   width: 100%;
   height: 100%;
 `;
@@ -137,6 +127,7 @@ const ContentArea = styled.div`
 const Title = styled.h2`
   ${theme.typography.headline2}
   margin: 20px 0 0;
+  padding: 0 20px;
   width: 100%;
   text-align: center;
   text-overflow: ellipsis;

@@ -14,4 +14,5 @@ export const paths = {
   PRIVACY: "privacy",
   TERMS: "terms",
   DETAIL: "detail",
+  JOIN: "join",
 };

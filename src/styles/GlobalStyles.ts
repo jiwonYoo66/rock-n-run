@@ -145,6 +145,13 @@ export default createGlobalStyle`
     scrollbar-width: none;
     -ms-overflow-style: none;
 
+    .skiptranslate > iframe,
+    .skiptranslate.goog-te-gadget {
+      display: none;
+    }
+    /* .skiptranslate.goog-te-gadget {
+      display: none;
+    } */
     ${theme.devices.mobile} {
       scrollbar-width: none;
       -ms-overflow-style: none;

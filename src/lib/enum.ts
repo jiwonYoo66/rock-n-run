@@ -1,3 +1,7 @@
+export const LS_KEY_ID = "LS_KEY_ID";
+export const LS_KEY_SAVE_ID_FLAG = "LS_KEY_SAVE_ID_FLAG";
+export const LS_KEY_SAVE_EXPIRE_DATE = "LS_KEY_SAVE_EXPIRE_DATE";
+
 export const getSortType = (type: string) => {
   switch (type) {
     case "최신순":

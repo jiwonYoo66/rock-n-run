@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 export type TypographyType = {
   fontSize: string;
   lineHeight: string;
@@ -24,4 +26,10 @@ export type FlexBoxType = {
   $border?: string;
   $fontColor?: string;
   $fontSize?: number;
+  $fontFamily?: string;
 };
+
+export type onChangeEventType =
+  | ChangeEvent<HTMLInputElement>
+  | ChangeEvent<HTMLSelectElement>
+  | ChangeEvent<HTMLTextAreaElement>;

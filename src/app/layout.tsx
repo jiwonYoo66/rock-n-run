@@ -29,19 +29,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <head>
-        <style>
-          {`body {
-                top: 0 !important;
-            }
-            body > .skiptranslate > iframe {
-                display: none;
-            }
-            .skiptranslate.goog-te-gadget {
-                display: none;
-            }`}
-        </style>
-      </head>
       <body>
         <ApolloWrapper>
           <StyledComponentsProvider>
