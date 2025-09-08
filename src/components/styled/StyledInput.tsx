@@ -5,8 +5,10 @@ import React, {
   KeyboardEvent,
   forwardRef,
   useState,
+  MouseEvent,
 } from "react";
 import styled, { css } from "styled-components";
+import { lighten, darken } from "polished";
 import theme from "@styles/theme";
 
 type StyledInputProps = {
@@ -26,13 +28,17 @@ type StyledInputProps = {
   name?: string;
   value: string;
   type?: string;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  onKeyPress?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   maxLength?: number;
   disabled?: boolean;
   placeholder?: string;
+  buttonTitle?: string;
+  buttonBgColor?: string;
+  buttonFontColor?: string;
 };
 
 const StyledInput = forwardRef(
@@ -49,6 +55,9 @@ const StyledInput = forwardRef(
       borderRadius = 0,
       title,
       subTitle,
+      buttonTitle,
+      buttonBgColor,
+      buttonFontColor,
       warning,
       description,
       name = "",
@@ -57,7 +66,8 @@ const StyledInput = forwardRef(
       onFocus = () => null,
       onBlur = () => null,
       onChange = () => null,
-      onKeyPress = () => null,
+      onKeyDown = () => null,
+      onClick = () => null,
       maxLength = 200,
       disabled = false,
       placeholder = "",
@@ -104,7 +114,7 @@ const StyledInput = forwardRef(
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={onChange}
-              onKeyPress={onKeyPress}
+              onKeyDown={onKeyDown}
               maxLength={maxLength}
               disabled={disabled}
               placeholder={placeholder}
@@ -140,11 +150,21 @@ const StyledInput = forwardRef(
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={onChange}
-              onKeyPress={onKeyPress}
+              onKeyDown={onKeyDown}
               maxLength={maxLength}
               disabled={disabled}
               placeholder={placeholder}
             />
+            {BUTTON && (
+              <Button
+                onClick={onClick}
+                $bgColor={buttonBgColor}
+                $fontColor={buttonFontColor}
+                disabled={disabled}
+              >
+                {buttonTitle}
+              </Button>
+            )}
           </InputBox>
           {warning && (
             <WarningBox $height={height}>
@@ -253,4 +273,31 @@ const Description = styled.div<{ $margin?: string }>`
   font-size: 14px;
   color: ${theme.colors.deepGrayFontColor};
   margin: ${({ $margin }) => ($margin ? $margin : "4px 0")};
+`;
+const Button = styled.button<{ $fontColor?: string; $bgColor?: string }>`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 30px;
+  color: ${({ $fontColor }) =>
+    $fontColor ? $fontColor : theme.colors.blackColor};
+  background-color: ${({ $bgColor }) =>
+    $bgColor ? $bgColor : theme.colors.ultraLightGrayBgColor};
+  padding: 0 10px;
+  font-size: 13px;
+  line-height: 22px;
+  transition: all 0.25s;
+
+  &:hover {
+    background-color: ${({ $bgColor }) =>
+      darken(0.03, $bgColor ?? theme.colors.ultraLightGrayBgColor)};
+    /* background-color: ${({ $bgColor }) =>
+      $bgColor === theme.colors.ultraLightGrayBgColor
+        ? darken(0.03, theme.colors.ultraLightGrayBgColor)
+        : darken(0.05, $bgColor ?? theme.colors.ultraLightGrayBgColor)}; */
+  }
 `;

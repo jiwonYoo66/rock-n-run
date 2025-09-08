@@ -1,5 +1,11 @@
-import React, { ChangeEvent, KeyboardEvent, useState, memo } from "react";
-import styled from "styled-components";
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  FocusEvent,
+  useState,
+  memo,
+} from "react";
+import styled, { css } from "styled-components";
 import theme from "@styles/theme";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 
@@ -15,6 +21,8 @@ type StyledPasswordProps = {
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
   maxLength?: number;
   disabled?: boolean;
   placeholder?: string;
@@ -30,6 +38,8 @@ const StyledPassword = ({
   bgColor = theme.colors.whiteColor,
   name,
   value,
+  onFocus = () => null,
+  onBlur = () => null,
   onChange,
   onKeyDown,
   maxLength = 200,
@@ -37,6 +47,21 @@ const StyledPassword = ({
   placeholder,
 }: StyledPasswordProps) => {
   const [visible, setVisible] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    setIsFocus(true);
+    if (onFocus) {
+      onFocus(e);
+    }
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    setIsFocus(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
 
   return (
     <Wrapper
@@ -46,6 +71,7 @@ const StyledPassword = ({
       $border={border}
       $bgColor={bgColor}
       $borderRadius={borderRadius}
+      $isFocus={isFocus}
     >
       <Input
         name={name}
@@ -53,6 +79,8 @@ const StyledPassword = ({
         type={visible ? "text" : "password"}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         maxLength={maxLength}
         disabled={disabled}
         placeholder={placeholder}
@@ -83,6 +111,7 @@ const Wrapper = styled.div<{
   $border?: string;
   $bgColor?: string;
   $borderRadius?: number;
+  $isFocus?: boolean;
 }>`
   width: ${({ $width }) => ($width ? $width : "100%")};
   height: ${({ $height }) => $height}px;
@@ -94,6 +123,11 @@ const Wrapper = styled.div<{
   border: ${({ $border }) => $border};
   border-radius: ${({ $borderRadius }) => $borderRadius}px;
   background-color: ${({ $bgColor }) => $bgColor};
+  ${({ $isFocus }) =>
+    $isFocus &&
+    css`
+      border: 1px solid ${theme.colors.blackColor};
+    `};
 `;
 const Input = styled.input`
   width: 90%;
@@ -102,6 +136,11 @@ const Input = styled.input`
   font-size: 15px;
   border-radius: 4px;
   background-color: inherit;
+  /* &:focus {
+    ${Wrapper} {
+      border: 1px solid ${theme.colors.blackColor};
+    }
+  } */
 `;
 const ViewButton = styled.div`
   display: flex;

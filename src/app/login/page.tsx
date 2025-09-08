@@ -143,7 +143,9 @@ const Login = () => {
           />
 
           <FlexBox $justifyContent="flex-end">
-            <L.LinkButton href={"/"}>이메일 찾기</L.LinkButton>
+            <L.LinkButton href={`/${paths.FIND_EMAIL}`}>
+              이메일 찾기
+            </L.LinkButton>
             <L.LinkButton href={"/"}>비밀번호 찾기</L.LinkButton>
           </FlexBox>
         </FlexBox>

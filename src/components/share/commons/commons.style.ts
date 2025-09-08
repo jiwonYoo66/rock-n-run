@@ -183,7 +183,7 @@ export const AuthTitle = styled.h2<{ $margin?: string }>`
   text-align: center;
 `;
 
-export const AuthDescription = styled.span`
+export const AuthDescription = styled.div`
   ${theme.typography.bodyMobile}
   margin: 0 0 48px;
   font-family: PretendardRegular, sans-serif;
