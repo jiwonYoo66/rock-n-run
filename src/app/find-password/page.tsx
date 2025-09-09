@@ -43,6 +43,10 @@ const FindPassword = () => {
   };
 
   const handleCheckCellphone = async () => {
+    if (inputs.cellphone.length < 11) {
+      toast.error("휴대폰 번호를 정확히 입력해주세요.");
+      return;
+    }
     try {
       toast.success("인증번호를 보냈습니다.");
       setCheckPhoneNum(true);
@@ -57,16 +61,19 @@ const FindPassword = () => {
     if (!isEmail(email)) {
       toast.error("이메일을 정확히 입력해주세요.");
       return;
-    }
-    if (cellphone.length < 11) {
-      toast.error("휴대폰 번호를 입력해주세요.");
+    } else if (cellphone.length < 11) {
+      toast.error("휴대폰 번호를 정확히 입력해주세요.");
       return;
-    }
-    if (!authNum) {
+    } else if (!checkPhoneNum) {
+      toast.error("휴대폰 번호를 인증해주세요.");
+      return;
+    } else if (!authNum) {
       toast.error("인증번호를 입력해주세요.");
       return;
     }
+
     setIsLoading(true);
+
     try {
       toast.info("1회용 비밀번호를 발급했습니다.");
       router.push(`/${paths.LOGIN}`);

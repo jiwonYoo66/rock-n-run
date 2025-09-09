@@ -46,6 +46,10 @@ const FindEmail = () => {
   };
 
   const handleCheckCellphone = async () => {
+    if (inputs.cellphone.length < 11) {
+      toast.error("휴대폰 번호를 정확히 입력해주세요.");
+      return;
+    }
     try {
       toast.success("인증번호를 보냈습니다.");
       setCheckPhoneNum(true);
@@ -57,15 +61,19 @@ const FindEmail = () => {
   const onSubmit = async () => {
     const { cellphone, authNum } = inputs;
 
-    if (!cellphone) {
-      toast.error("휴대폰 번호를 입력해주세요.");
+    if (cellphone.length < 11) {
+      toast.error("휴대폰 번호를 정확히 입력해주세요.");
       return;
-    }
-    if (!authNum) {
+    } else if (!checkPhoneNum) {
+      toast.error("휴대폰 번호를 인증해주세요.");
+      return;
+    } else if (authNum.length < 6) {
       toast.error("인증번호를 입력해주세요.");
       return;
     }
+
     setIsLoading(true);
+
     try {
       // setResult([]);
       setResult(["example@platcube.com"]);
