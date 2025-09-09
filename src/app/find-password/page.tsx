@@ -3,28 +3,25 @@ import { useRouter } from "next/navigation";
 import { useState, KeyboardEvent } from "react";
 import { toast } from "react-toastify";
 
-import * as F from "./findEmail.style";
-import theme from "@styles/theme";
 import { paths } from "@lib/paths";
 import { onChangeEventType } from "@utils/types";
-import { onlyNumber } from "@utils/commons";
+import { onlyNumber, isEmail } from "@utils/commons";
 
 import {
   Wrapper,
   AuthWrapper,
   AuthTitle,
   AuthDescription,
-  FlexBox,
 } from "@components/share/commons/commons.style";
 import StyledInput from "@components/styled/StyledInput";
 import StyledButton from "@components/styled/StyledButton";
 
-const FindEmail = () => {
+const FindPassword = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [checkPhoneNum, setCheckPhoneNum] = useState(false);
-  const [result, setResult] = useState<string[] | null>(null);
   const [inputs, setInputs] = useState({
+    email: "",
     cellphone: "",
     authNum: "",
   });
@@ -55,9 +52,13 @@ const FindEmail = () => {
   };
 
   const onSubmit = async () => {
-    const { cellphone, authNum } = inputs;
+    const { email, cellphone, authNum } = inputs;
 
-    if (!cellphone) {
+    if (!isEmail(email)) {
+      toast.error("이메일을 정확히 입력해주세요.");
+      return;
+    }
+    if (cellphone.length < 11) {
       toast.error("휴대폰 번호를 입력해주세요.");
       return;
     }
@@ -67,8 +68,8 @@ const FindEmail = () => {
     }
     setIsLoading(true);
     try {
-      // setResult([]);
-      setResult(["example@platcube.com"]);
+      toast.info("1회용 비밀번호를 발급했습니다.");
+      router.push(`/${paths.LOGIN}`);
     } catch (err) {
       console.info(err);
     } finally {
@@ -79,8 +80,17 @@ const FindEmail = () => {
   return (
     <Wrapper>
       <AuthWrapper>
-        <AuthTitle>이메일를 잊으셨나요?</AuthTitle>
-        <AuthDescription>휴대폰 번호와 인증번호를 입력해주세요</AuthDescription>
+        <AuthTitle>비밀번호를 잊으셨나요?</AuthTitle>
+        <AuthDescription>
+          이메일과 휴대폰 번호, 인증번호를 입력해주세요
+        </AuthDescription>
+        <StyledInput
+          name="email"
+          value={inputs.email}
+          onChange={onChange}
+          placeholder="이메일"
+          margin="0 0 8px"
+        />
         <StyledInput
           name="cellphone"
           value={inputs.cellphone}
@@ -106,39 +116,15 @@ const FindEmail = () => {
           margin="0 0 48px"
         />
         <StyledButton
-          title="찾기"
+          title="1회용 비밀번호 발급하기"
           onClick={onSubmit}
           loading={isLoading}
           fontSize={18}
           fontFamily="PretendardSemiBold"
         />
-        {result && (
-          <F.SearchArea>
-            <F.SearchText>검색결과</F.SearchText>
-            {!result.length ? (
-              <F.Empty>검색 결과가 존재하지 않습니다.</F.Empty>
-            ) : (
-              <>
-                <F.Result>{result[0]}</F.Result>
-                <StyledButton
-                  title="로그인하러 가기"
-                  margin="32px 0 187px"
-                  width={343}
-                  fontSize={14}
-                  fontFamily="PretendardRegular"
-                  fontColor={theme.colors.blackColor}
-                  bgColor={theme.colors.whiteColor}
-                  border={`${theme.colors.ultraLightGrayBgColor} 1px solid`}
-                  onClick={() => router.push(`/${paths.LOGIN}`)}
-                  borderRadius={0}
-                />
-              </>
-            )}
-          </F.SearchArea>
-        )}
       </AuthWrapper>
     </Wrapper>
   );
 };
 
-export default FindEmail;
+export default FindPassword;

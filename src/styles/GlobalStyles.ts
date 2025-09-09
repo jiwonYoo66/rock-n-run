@@ -219,9 +219,9 @@ export default createGlobalStyle`
       font-size: 14px;
       font-family: PretendardRegular, sans-serif;
     }
-
     &:disabled {
       color: ${theme.colors.blackColor};
+      background-color: ${theme.colors.ultraLightGrayBgColor};
     }
   }
 

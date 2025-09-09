@@ -300,4 +300,10 @@ const Button = styled.button<{ $fontColor?: string; $bgColor?: string }>`
         ? darken(0.03, theme.colors.ultraLightGrayBgColor)
         : darken(0.05, $bgColor ?? theme.colors.ultraLightGrayBgColor)}; */
   }
+  &:disabled {
+    color: ${theme.colors.deepGrayFontColor};
+    background-color: ${({ $bgColor }) =>
+      darken(0.05, $bgColor ?? theme.colors.ultraLightGrayBgColor)};
+    cursor: auto;
+  }
 `;

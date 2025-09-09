@@ -16,4 +16,5 @@ export const paths = {
   DETAIL: "detail",
   JOIN: "join",
   FIND_EMAIL: "find-email",
+  FIND_PASSWORD: "find-password",
 };
