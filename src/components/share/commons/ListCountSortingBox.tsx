@@ -2,7 +2,7 @@ import React, { ChangeEvent, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { DataValueType } from "@utils/types";
 import theme from "@styles/theme";
-import StyledSelect from "@components/styled/StyledSelect";
+import StyledSelect from "@components/styled/StyledSelect2";
 
 type ListCountSortingBoxProps = {
   count: number;

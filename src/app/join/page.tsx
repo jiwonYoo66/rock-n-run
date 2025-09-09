@@ -1,15 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, KeyboardEvent } from "react";
+import { useState, useEffect, KeyboardEvent, MouseEvent } from "react";
 import { toast } from "react-toastify";
 
 import * as J from "./join.style";
 import theme from "@styles/theme";
-import {
-  LS_KEY_ID,
-  LS_KEY_SAVE_ID_FLAG,
-  LS_KEY_SAVE_EXPIRE_DATE,
-} from "@lib/enum";
 import { paths } from "@lib/paths";
 import { userLogin } from "src/modules/authentication";
 import { onChangeEventType } from "@utils/types";
@@ -20,50 +15,42 @@ import {
   AuthTitle,
   FlexBox,
 } from "@components/share/commons/commons.style";
+import StyledSelect from "@components/styled/StyledSelect";
 import StyledInput from "@components/styled/StyledInput";
 import StyledPassword from "@components/styled/StyledPassword";
 import StyledCheckbox from "@components/styled/StyledCheckbox";
 import StyledButton from "@components/styled/StyledButton";
+import StyledCalendar from "@components/styled/StyledCalendar";
+import StyledPolicyCheckbox from "@components/styled/StyledPolicyCheckbox";
+import StyledPostcode from "@components/styled/StyledPostcode";
 
 const Login = () => {
   const router = useRouter();
-  const [saveIdFlag, setSaveIdFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
+  const [birthday, setBirthday] = useState(new Date());
+  const [checkInfo, setCheckInfo] = useState<Record<string, boolean>>({
+    email: false,
+    cellphone: false,
   });
-
-  useEffect(() => {
-    const idFlag = localStorage.getItem(LS_KEY_SAVE_ID_FLAG);
-    const expireDate = localStorage.getItem(LS_KEY_SAVE_EXPIRE_DATE);
-    const clearLocalStorage = () => {
-      localStorage.removeItem(LS_KEY_SAVE_EXPIRE_DATE);
-      localStorage.removeItem(LS_KEY_SAVE_ID_FLAG);
-      localStorage.removeItem(LS_KEY_ID);
-      setSaveIdFlag(false);
-    };
-    // 저장 유효기간 지나면 아이디 저장 정보 제거
-    if (expireDate && new Date().getTime() > JSON.parse(expireDate)) {
-      clearLocalStorage();
-      return;
-    }
-
-    // 아이디 저장 여부 반영
-    if (idFlag !== null) setSaveIdFlag(JSON.parse(idFlag));
-
-    // 아이디 미 저장 시 아이디 저장 정보 제거
-    if (idFlag && !JSON.parse(idFlag as string)) {
-      clearLocalStorage();
-      return;
-    }
-    // 이메일 반영
-    if (localStorage.getItem(LS_KEY_ID) !== null)
-      setInputs((prev) => ({
-        ...prev,
-        email: localStorage.getItem(LS_KEY_ID) as string,
-      }));
-  }, []);
+  const [togglePolicy, setTogglePolicy] = useState<Record<string, boolean>>({
+    checkAll: false,
+    privacy: false,
+    service: false,
+  });
+  const [inputs, setInputs] = useState<Record<string, string>>({
+    nationality: "선택",
+    email: "",
+    authEmailNum: "",
+    password: "",
+    passwordConfirm: "",
+    name: "",
+    cellphone: "",
+    authPhoneNum: "",
+    zipcode: "",
+    address: "",
+    addressDetail: "",
+    gender: "선택",
+  });
 
   const onChange = (e: onChangeEventType) => {
     const { name, value } = e.target;
@@ -74,12 +61,54 @@ const Login = () => {
     });
   };
 
-  const handleSaveIdFlag = () => {
-    localStorage.setItem(LS_KEY_SAVE_ID_FLAG, JSON.stringify(!saveIdFlag));
-    setSaveIdFlag(!saveIdFlag);
+  // 중복확인 & 인증
+  const handleCheckOverlap = (e: MouseEvent<HTMLButtonElement>) => {
+    const { name } = e.currentTarget;
+    try {
+      setCheckInfo((prev) => {
+        return {
+          ...prev,
+          [name]: !prev[name],
+        };
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleLogin = async () => {
+  // 약관동의
+  const handleTogglePolicy = (e: onChangeEventType) => {
+    const { name } = e.target;
+    if (name === "checkAll") {
+      return setTogglePolicy((prev) => {
+        return {
+          checkAll: !prev[name],
+          privacy: !prev[name],
+          service: !prev[name],
+        };
+      });
+    }
+    if (name === "privacy") {
+      return setTogglePolicy((prev) => {
+        return {
+          ...prev,
+          [name]: !prev[name],
+          checkAll: !prev[name] && prev.service ? true : false,
+        };
+      });
+    }
+    if (name === "service") {
+      return setTogglePolicy((prev) => {
+        return {
+          ...prev,
+          [name]: !prev[name],
+          checkAll: !prev[name] && prev.privacy ? true : false,
+        };
+      });
+    }
+  };
+
+  const onSubmit = async () => {
     const { email, password } = inputs;
 
     if (!email || !password) {
@@ -88,20 +117,6 @@ const Login = () => {
     }
     setIsLoading(true);
     try {
-      //     if (data?.userLogin) {
-      if (saveIdFlag) {
-        localStorage.setItem(LS_KEY_ID, email);
-        // 아이디 저장 한달 유효 처리
-        if (localStorage.getItem(LS_KEY_SAVE_EXPIRE_DATE) === null) {
-          const expireDate = new Date().getTime() + 30 * 24 * 60 * 60 * 1000; //30일동안 저장
-          localStorage.setItem(
-            LS_KEY_SAVE_EXPIRE_DATE,
-            JSON.stringify(expireDate)
-          );
-        }
-      }
-      userLogin(email);
-      // }
     } catch (err) {
       console.info(err);
     } finally {
@@ -113,7 +128,159 @@ const Login = () => {
     <Wrapper>
       <AuthWrapper>
         <AuthTitle $margin="0 0 48px">락앤런 회원가입</AuthTitle>
-        JOIN
+        <StyledSelect
+          title="국적"
+          name="nationality"
+          value={inputs.nationality}
+          options={["선택", "대한민국"]}
+          onChange={onChange}
+          placeholder="선택"
+          margin="0 0 20px"
+          COLUMN
+        />
+        <StyledInput
+          title="이메일(아이디)"
+          name="email"
+          value={inputs.email}
+          onChange={onChange}
+          placeholder="이메일을 입력해주세요"
+          onClick={handleCheckOverlap}
+          maxLength={11}
+          margin="0 0 8px"
+          buttonTitle="인증번호"
+          padding="14px 100px 14px 12px"
+          disabled={checkInfo.email}
+          BUTTON
+        />
+        <StyledInput
+          name="authEmailNum"
+          value={inputs.authEmailNum}
+          onChange={onChange}
+          placeholder="6자리 인증번호"
+          maxLength={6}
+          margin="0 0 20px"
+        />
+        <StyledPassword
+          name="password"
+          title="비밀번호"
+          value={inputs.password}
+          onChange={onChange}
+          placeholder="비밀번호를 입력해주세요"
+          margin="0 0 8px"
+          ICON={false}
+        />
+        <StyledPassword
+          name="passwordConfirm"
+          value={inputs.passwordConfirm}
+          onChange={onChange}
+          placeholder="비밀번호 재입력"
+          margin="0 0 20px"
+          ICON={false}
+        />
+        <StyledInput
+          title="이름"
+          name="name"
+          value={inputs.name}
+          onChange={onChange}
+          placeholder="이름을 입력해주세요"
+          maxLength={20}
+          margin="0 0 20px"
+        />
+        <StyledInput
+          title="휴대폰번호"
+          name="cellphone"
+          value={inputs.cellphone}
+          onChange={onChange}
+          onClick={handleCheckOverlap}
+          placeholder="휴대폰번호를 입력해주세요"
+          maxLength={11}
+          margin="0 0 8px"
+          buttonTitle="인증번호"
+          padding="14px 100px 14px 12px"
+          disabled={checkInfo.email}
+          BUTTON
+        />
+        <StyledInput
+          name="authPhoneNum"
+          value={inputs.authPhoneNum}
+          onChange={onChange}
+          placeholder="6자리 인증번호"
+          maxLength={6}
+          margin="0 0 20px"
+        />
+        <StyledCalendar
+          title="생년월일"
+          value={birthday}
+          onChange={(date) => setBirthday(date as Date)}
+          // placeholder="연도. 월. 일"
+          margin="0 0 20px"
+          COLUMN
+        />
+        <StyledPostcode
+          value={inputs.address}
+          setInputs={setInputs}
+          borderRadius={0}
+          margin="0 0 8px"
+        />
+        <StyledInput
+          name="addressDetail"
+          value={inputs.addressDetail}
+          onChange={onChange}
+          placeholder="상세주소"
+          maxLength={80}
+          margin="0 0 20px"
+          borderRadius={0}
+        />
+        <StyledSelect
+          title="성별"
+          name="gender"
+          value={inputs.gender}
+          options={["선택", "남성", "여성"]}
+          onChange={onChange}
+          placeholder="선택"
+          margin="0 0 32px"
+          COLUMN
+        />
+        <StyledPolicyCheckbox
+          checkboxId="policyAll"
+          name="checkAll"
+          label="약관 전체 동의"
+          subLabel="(선택항목 포함)"
+          value={false}
+          checked={togglePolicy.checkAll}
+          onChange={handleTogglePolicy}
+          margin="0 0 20px"
+        />
+        <StyledPolicyCheckbox
+          checkboxId="policy1"
+          name="privacy"
+          label="[필수] 개인정보 수집·이용 동의"
+          value={false}
+          checked={togglePolicy.privacy}
+          onChange={handleTogglePolicy}
+          onClick={() => {}}
+          margin="0 0 16px"
+          OPTIONS
+        />
+        <StyledPolicyCheckbox
+          checkboxId="policy2"
+          name="service"
+          label="[필수] 서비스 이용 약관 동의"
+          value={false}
+          checked={togglePolicy.service}
+          onChange={handleTogglePolicy}
+          onClick={() => {}}
+          OPTIONS
+        />
+        <StyledButton
+          title="회원가입하기"
+          margin="32px 0 180px"
+          width={343}
+          fontSize={14}
+          onClick={onSubmit}
+          borderRadius={0}
+          disabled={!togglePolicy.checkAll}
+        />
       </AuthWrapper>
     </Wrapper>
   );

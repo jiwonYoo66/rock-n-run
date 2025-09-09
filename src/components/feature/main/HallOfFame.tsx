@@ -8,7 +8,7 @@ import { useWindowSize } from "@hooks/useWindowSize";
 
 import { FlexBox } from "@components/share/commons/commons.style";
 import Headline from "@components/layout/headline/Headline";
-import StyledSelect from "@components/styled/StyledSelect";
+import StyledSelect from "@components/styled/StyledSelect2";
 
 const HallOfFame = () => {
   const { width } = useWindowSize();

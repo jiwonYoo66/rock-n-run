@@ -157,6 +157,7 @@ const StyledInput = forwardRef(
             />
             {BUTTON && (
               <Button
+                name={name}
                 onClick={onClick}
                 $bgColor={buttonBgColor}
                 $fontColor={buttonFontColor}

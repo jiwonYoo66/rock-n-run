@@ -18,6 +18,7 @@ type StyledPasswordProps = {
   borderRadius?: number;
   bgColor?: string;
   name?: string;
+  title?: string;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -37,6 +38,7 @@ const StyledPassword = ({
   borderRadius = 0,
   bgColor = theme.colors.whiteColor,
   name,
+  title,
   value,
   onFocus = () => null,
   onBlur = () => null,
@@ -64,46 +66,57 @@ const StyledPassword = ({
   };
 
   return (
-    <Wrapper
-      $width={width}
-      $height={height}
-      $margin={margin}
-      $border={border}
-      $bgColor={bgColor}
-      $borderRadius={borderRadius}
-      $isFocus={isFocus}
-    >
-      <Input
-        name={name}
-        value={value}
-        type={visible ? "text" : "password"}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        maxLength={maxLength}
-        disabled={disabled}
-        placeholder={placeholder}
-        autoComplete="off"
-      />
-      {ICON && (
-        <ViewButton onClick={() => setVisible(!visible)}>
-          {visible ? (
-            <IoEyeOffSharp
-              fontSize={18}
-              color={theme.colors.lightGrayFontColor}
-            />
-          ) : (
-            <IoEyeSharp fontSize={18} color={theme.colors.lightGrayFontColor} />
-          )}
-        </ViewButton>
-      )}
-    </Wrapper>
+    <>
+      {title && <Title>{title}</Title>}
+      <Wrapper
+        $width={width}
+        $height={height}
+        $margin={margin}
+        $border={border}
+        $bgColor={bgColor}
+        $borderRadius={borderRadius}
+        $isFocus={isFocus}
+        $icon={ICON}
+      >
+        <Input
+          name={name}
+          value={value}
+          type={visible ? "text" : "password"}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          maxLength={maxLength}
+          disabled={disabled}
+          placeholder={placeholder}
+          autoComplete="off"
+          $icon={ICON}
+        />
+        {ICON && (
+          <ViewButton onClick={() => setVisible(!visible)}>
+            {visible ? (
+              <IoEyeOffSharp
+                fontSize={18}
+                color={theme.colors.lightGrayFontColor}
+              />
+            ) : (
+              <IoEyeSharp
+                fontSize={18}
+                color={theme.colors.lightGrayFontColor}
+              />
+            )}
+          </ViewButton>
+        )}
+      </Wrapper>
+    </>
   );
 };
 
 export default memo(StyledPassword);
-
+const Title = styled.div`
+  font-size: 14px;
+  margin-bottom: 8px;
+`;
 const Wrapper = styled.div<{
   $width?: string;
   $height?: number;
@@ -112,13 +125,13 @@ const Wrapper = styled.div<{
   $bgColor?: string;
   $borderRadius?: number;
   $isFocus?: boolean;
+  $icon?: boolean;
 }>`
   width: ${({ $width }) => ($width ? $width : "100%")};
   height: ${({ $height }) => $height}px;
   margin: ${({ $margin }) => ($margin ? $margin : 0)};
   display: flex;
   align-items: center;
-  padding-right: 12px;
   justify-content: space-between;
   border: ${({ $border }) => $border};
   border-radius: ${({ $borderRadius }) => $borderRadius}px;
@@ -128,19 +141,25 @@ const Wrapper = styled.div<{
     css`
       border: 1px solid ${theme.colors.blackColor};
     `};
+  ${({ $icon }) =>
+    $icon &&
+    css`
+      padding-right: 12px;
+    `}
 `;
-const Input = styled.input`
-  width: 90%;
+
+const Input = styled.input<{ $icon?: boolean }>`
+  width: 100%;
   height: 100%;
   padding: 14px 12px;
   font-size: 15px;
   border-radius: 4px;
   background-color: inherit;
-  /* &:focus {
-    ${Wrapper} {
-      border: 1px solid ${theme.colors.blackColor};
-    }
-  } */
+  ${({ $icon }) =>
+    $icon &&
+    css`
+      width: 90%;
+    `}
 `;
 const ViewButton = styled.div`
   display: flex;

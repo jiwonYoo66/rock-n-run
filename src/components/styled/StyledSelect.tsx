@@ -1,85 +1,126 @@
-/*
- todo onChange Select data-value
- const onChange = () => {
-    // <option
-    //     value={option.value}
-    //     data-value={option.title}>
-    //     {option.title}
-    // </option>
-    if ('selectedIndex' in e.target) {
-        console.info('dataSet : ', e.target.options[e.target.selectedIndex].dataset.value);
-    }
-  }
-*/
 import React, { memo } from "react";
 import styled, { css } from "styled-components";
-import { DataValueType, TypographyType } from "@utils/types";
+import { DataValueType } from "@utils/types";
 import theme from "@styles/theme";
 
+type FontType = {
+  $fontSize?: number;
+  $fontColor?: string;
+  $margin?: string;
+};
+
 type StyledSelectType = {
+  REQUIRED?: boolean;
+  HIDDEN?: boolean;
   DATA_VALUE?: boolean;
+  COLUMN?: boolean;
   width?: number;
-  percent?: number;
   height?: number;
-  flex?: number;
-  typography?: TypographyType;
-  fontColor?: string;
-  fontFamily?: string;
-  fontSize?: number;
-  padding?: string;
   margin?: string;
-  border?: string;
-  borderRadius?: number;
   title?: string;
+  description?: string;
   name?: string;
-  value?: string | number;
+  value: string | number;
   options: string[] | number[] | DataValueType[];
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   placeholder?: string | number;
+  fontFamily?: string;
+  fontColor?: string;
+  fontSize?: number;
   disabled?: boolean;
 };
 
 const StyledSelect = ({
+  REQUIRED,
+  HIDDEN,
   DATA_VALUE,
+  COLUMN,
   width,
-  percent,
-  height = 48,
-  flex,
-  typography,
-  fontColor = theme.colors.blackColor,
-  fontFamily = "PretendardRegular",
-  fontSize = 14,
-  padding = "14px 12px",
+  height,
   margin,
-  border,
-  borderRadius = 4,
   title,
+  description,
   value,
   name,
   options = [],
   onChange = () => null,
   placeholder,
+  fontFamily = "PretendardRegular",
+  fontColor = theme.colors.blackColor,
+  fontSize,
   disabled,
 }: StyledSelectType) => {
+  if (COLUMN) {
+    return (
+      <Wrapper $column={COLUMN} $margin={margin}>
+        {title && (
+          <ColumnTitle>
+            {title}
+            {REQUIRED && <Asterisk> *</Asterisk>}
+          </ColumnTitle>
+        )}
+
+        <Select
+          $column={COLUMN}
+          $width={width}
+          $height={height}
+          $fontColor={
+            placeholder === value ? theme.colors.deepGrayFontColor : fontColor
+          }
+          $fontFamily={fontFamily}
+          disabled={disabled}
+          name={name}
+          value={value}
+          onChange={onChange}
+        >
+          {!DATA_VALUE &&
+            (options as string[] | number[]).map(
+              (option: string | number, index: number) => (
+                <option
+                  key={`${index}-option`}
+                  value={option}
+                  disabled={!!placeholder && index === 0}
+                >
+                  {option}
+                </option>
+              )
+            )}
+          {DATA_VALUE &&
+            (options as DataValueType[]).map(
+              (option: DataValueType, index: number) => (
+                <option
+                  key={`${index}-option`}
+                  value={option.value}
+                  data-value={option.title}
+                  disabled={!!placeholder && index === 0}
+                >
+                  {option.title}
+                </option>
+              )
+            )}
+        </Select>
+        {description && (
+          <DescriptionBox>
+            <Description $fontSize={fontSize}>{description}</Description>
+          </DescriptionBox>
+        )}
+      </Wrapper>
+    );
+  }
+
   return (
-    <Wrapper $percent={percent} $flex={flex} $margin={margin}>
-      {title && <Title>{title}</Title>}
+    <Wrapper $margin={margin} $hidden={HIDDEN}>
+      {title && <RowTitle>{title} : </RowTitle>}
       <Select
         $width={width}
-        $height={height}
         $fontColor={
-          placeholder === value ? theme.colors.grayFontColor : fontColor
+          placeholder === value ? theme.colors.deepGrayFontColor : fontColor
         }
         $fontFamily={fontFamily}
-        $fontSize={fontSize}
-        $typography={typography}
-        $padding={padding}
-        $border={border}
-        $borderRadius={borderRadius}
+        disabled={disabled}
         name={name}
         value={value}
         onChange={onChange}
-        disabled={disabled}
       >
         {!DATA_VALUE &&
           (options as string[] | number[]).map(
@@ -99,8 +140,6 @@ const StyledSelect = ({
               <option
                 key={`${index}-option`}
                 value={option.value}
-                data-value={option.title}
-                data-option={option.option}
                 disabled={!!placeholder && index === 0}
               >
                 {option.title}
@@ -115,68 +154,110 @@ const StyledSelect = ({
 export default memo(StyledSelect);
 
 const Wrapper = styled.div<{
+  $column?: boolean;
   $hidden?: boolean;
-  $percent?: number;
-  $flex?: number;
   $margin?: string;
 }>`
-  width: ${({ $percent }) => ($percent ? `${$percent}%` : "auto")};
   position: relative;
-  margin: ${({ $margin }) => ($margin ? $margin : 0)};
-  flex: ${({ $flex }) => ($flex ? $flex : 0)};
-`;
-const Title = styled.div`
-  font-size: 14px;
-  font-family: PretendardMedium, sans-serif;
-  margin-bottom: 8px;
   display: flex;
   align-items: center;
+  margin: ${({ $margin }) => ($margin ? $margin : 0)};
+
+  ${({ $column }) =>
+    $column &&
+    css`
+      display: block;
+    `};
+
+  ${({ $hidden }) =>
+    $hidden &&
+    css`
+      position: absolute;
+      top: 0;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+
+      select {
+        height: 100%;
+      }
+    `};
 `;
+
+const RegularFont = styled.div<FontType>`
+  font-family: PretendardRegular, sans-serif;
+  font-size: ${({ $fontSize }) => ($fontSize ? $fontSize : 16)}px;
+  color: ${({ $fontColor, theme }) =>
+    $fontColor ? $fontColor : theme.colors.blackColor};
+  margin: ${({ $margin }) => ($margin ? $margin : 0)};
+`;
+
+const RowTitle = styled(RegularFont)`
+  margin-right: 12px;
+  font-size: 14px;
+  color: ${theme.colors.deepGrayFontColor};
+`;
+const ColumnTitle = styled(RegularFont)`
+  margin-bottom: 8px;
+  font-size: 14px;
+`;
+
+const Asterisk = styled.span`
+  color: ${theme.colors.activeOrange};
+`;
+
 const Select = styled.select<{
+  $column?: boolean;
   $width?: number;
   $height?: number;
-  $typography?: TypographyType;
   $fontColor?: string;
   $fontFamily?: string;
-  $fontSize?: number;
-  $padding?: string;
-  $border?: string;
-  $borderRadius?: number;
 }>`
-  min-width: ${({ $width }) => ($width ? `${$width}px` : "100%")};
-  height: ${({ $height }) => ($height ? `${$height}px` : "auto")};
-  ${({ $typography }) =>
-    $typography ? $typography : theme.typography.bodyMobile};
+  width: ${({ $width }) => ($width ? `${$width}px` : "100%")};
+  min-width: 80px;
   font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
-  font-size: ${({ $fontSize }) => $fontSize}px;
-  font-weight: 500;
   color: ${({ $fontColor }) =>
     $fontColor ? $fontColor : theme.colors.blackColor};
-  padding: ${({ $padding }) => ($padding ? $padding : 0)};
-  border: ${({ $border }) => ($border ? $border : "none")};
-  border-radius: ${({ $borderRadius }) =>
-    $borderRadius ? $borderRadius : 0}px;
   background-image: url("./assets/icons/icon_selectArrowDown.svg");
-  background-size: 16px;
+  background-size: 12px;
   background-repeat: no-repeat;
+  background-position: top 50% right 0;
   background-color: inherit;
-  background-position: top 50% right ${({ $border }) => ($border ? "12px" : 0)}; // border 가 있을 경우 12px 패딩효과
 
-  /* &:focus {
-    ${({ $border }) =>
-    $border &&
+  ${({ $column, $height }) =>
+    $column &&
     css`
-      border: 1px solid ${theme.colors.blackColor};
+      padding: 0 12px;
+      height: ${$height ? `${$height}px` : "50px"};
+      /* font-size: 15px; */
+      /* border-radius: 4px; */
+      border: 1px solid ${theme.colors.lightGrayBorderColor};
+      background-position: top 50% right 12px;
+      background-image: url("./assets/icons/icon_selectArrow.svg");
+      background-size: 24px;
     `};
-  } */
 
   &:disabled {
-    cursor: initial;
-    background-color: ${theme.colors.disabledColor};
+    ${({ $column }) =>
+      $column &&
+      css`
+        background-color: ${theme.colors.ultraLightGrayBgColor};
+      `};
   }
+`;
+const DescriptionBox = styled.div``;
 
-  @media screen and (max-width: 320px) {
-    padding-left: 8px;
-    background-position: top 50% right ${({ $border }) => ($border ? "4px" : 0)}; // border 가 있을 경우 12px 패딩효과
-  }
+const Description = styled(RegularFont)<{
+  $margin?: string;
+  $width?: string;
+  $fontColor?: string;
+  $fontSize?: number;
+}>`
+  font-size: ${({ $fontSize }) => ($fontSize ? $fontSize : 12)}px;
+  color: ${({ $fontColor }) =>
+    $fontColor ? $fontColor : theme.colors.deepGrayFontColor};
+  margin: ${({ $margin }) => ($margin ? $margin : "8px 0 0")};
+  max-width: ${({ $width }) => ($width ? $width : "auto")};
+  white-space: normal;
+  word-break: keep-all;
 `;

@@ -19,6 +19,7 @@ const colors = {
   deepGrayFontColor: "#6E6E6E", // subtext, placeholder
   lightGrayFontColor: "#B3B3B3", // disabled
   darkPoint: "#222222",
+  subTitleColor: "#949494",
 
   // Border
   grayBorderColor: "#D1D1D1",
