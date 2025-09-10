@@ -1,24 +1,26 @@
-import React, { ChangeEvent, memo, useEffect, useState, JSX } from "react";
+"use client";
+import React, { ChangeEvent, memo, useEffect } from "react";
 import styled, { css } from "styled-components";
 import DatePicker, { ReactDatePickerCustomHeaderProps } from "react-datepicker";
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-import { ko } from "date-fns/locale/ko";
+import { ko } from "date-fns/locale";
 import { getYear, getMonth } from "date-fns";
 import { getYearOption } from "@utils/commons";
 import theme from "@styles/theme";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 
 type StyledCalendarProps = {
-  ROW?: boolean;
+  COLUMN?: boolean;
+  ARROW?: boolean;
+  CALENDAR?: boolean;
   title?: string;
-  width?: string | number;
+  name?: string;
+  width?: number;
   margin?: string;
   dateFormat?: string;
   value: Date | null;
   onChange: (date: Date | null) => void;
-  excludeDates?: Date[];
   placeholder?: string;
-  disabled?: boolean;
-  yearOption?: string[] | number[];
+  excludeDates?: Date[];
 };
 
 const CustomHeader = ({
@@ -29,9 +31,17 @@ const CustomHeader = ({
   increaseMonth,
   prevMonthButtonDisabled,
   nextMonthButtonDisabled,
-  yearOption,
-}: ReactDatePickerCustomHeaderProps & { yearOption?: string[] | number[] }) => {
-  const [years, setYears] = useState(getYearOption());
+}: ReactDatePickerCustomHeaderProps) => {
+  // const years = getYearOption();
+  // 현재 선택 연도
+  const selectedYear = getYear(date);
+
+  // years 범위를 "1920 ~ max(현재연도, 선택연도)"로 보장
+  const nowYear = new Date().getFullYear();
+  const maxYear = Math.max(nowYear, selectedYear);
+
+  const years: number[] = [];
+  for (let y = maxYear; y >= selectedYear - 100; y--) years.push(y); // 내림차순(사용성 좋음)
   const months = [
     "1월",
     "2월",
@@ -47,12 +57,6 @@ const CustomHeader = ({
     "12월",
   ];
 
-  useEffect(() => {
-    if (yearOption) {
-      setYears(yearOption);
-    }
-  }, [yearOption]);
-
   return (
     <Header>
       {!prevMonthButtonDisabled && (
@@ -65,13 +69,13 @@ const CustomHeader = ({
         </ArrowBox>
       )}
       <SelectBox
-        value={getYear(date)}
+        value={String(selectedYear)}
         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           changeYear(parseInt(e.target.value, 10))
         }
       >
         {years?.map((option: any) => (
-          <option key={option} value={option}>
+          <option key={option} value={String(option)}>
             {option}
           </option>
         ))}
@@ -100,31 +104,31 @@ const CustomHeader = ({
 };
 
 const StyledCalendar = ({
-  ROW,
+  COLUMN,
+  ARROW,
+  CALENDAR = true,
   title,
+  name,
   width,
   margin,
   dateFormat = "yyyy-MM-dd",
   value = new Date(),
-  onChange,
+  onChange = () => null,
+  placeholder = "",
   excludeDates = [],
-  placeholder,
-  disabled,
-  yearOption,
 }: StyledCalendarProps) => {
-  if (ROW) {
+  if (COLUMN) {
     return (
-      <Wrapper $width={width} $margin={margin}>
-        {title && <RowTitle>{title}</RowTitle>}
-        <DateBox>
+      <Wrapper $column={COLUMN} $width={width} $margin={margin}>
+        {title && <ColumnTitle>{title}</ColumnTitle>}
+        <DateBox $arrow={ARROW} $calendar={CALENDAR} $column={COLUMN}>
           <DatePicker
             dateFormat={dateFormat}
-            locale={ko}
+            locale={ko as any}
             selected={value}
             onChange={onChange}
+            placeholderText={placeholder}
             excludeDates={excludeDates}
-            disabled={disabled}
-            // includeDates={includeDates.map(date => new Date(date))}
             renderCustomHeader={({
               monthDate,
               date,
@@ -138,7 +142,7 @@ const StyledCalendar = ({
               nextMonthButtonDisabled,
               prevYearButtonDisabled,
               nextYearButtonDisabled,
-            }: ReactDatePickerCustomHeaderProps): JSX.Element => {
+            }: ReactDatePickerCustomHeaderProps): React.ReactElement => {
               return (
                 <CustomHeader
                   monthDate={monthDate}
@@ -154,7 +158,6 @@ const StyledCalendar = ({
                   nextMonthButtonDisabled={nextMonthButtonDisabled}
                   prevYearButtonDisabled={prevYearButtonDisabled}
                   nextYearButtonDisabled={nextYearButtonDisabled}
-                  yearOption={yearOption}
                 />
               );
             }}
@@ -165,17 +168,16 @@ const StyledCalendar = ({
   }
 
   return (
-    <Wrapper $row={ROW} $width={width} $margin={margin}>
-      {title && <ColumnTitle>{title}</ColumnTitle>}
-      <DateBox $row={ROW}>
+    <Wrapper $width={width} $margin={margin}>
+      {title && <RowTitle>{title} :</RowTitle>}
+      <DateBox $arrow={ARROW}>
         <DatePicker
           dateFormat={dateFormat}
-          locale={ko}
+          locale={ko as any}
           selected={value}
           onChange={onChange}
           excludeDates={excludeDates}
           placeholderText={placeholder}
-          disabled={disabled}
           renderCustomHeader={({
             monthDate,
             date,
@@ -189,7 +191,7 @@ const StyledCalendar = ({
             nextMonthButtonDisabled,
             prevYearButtonDisabled,
             nextYearButtonDisabled,
-          }: ReactDatePickerCustomHeaderProps): JSX.Element => {
+          }: ReactDatePickerCustomHeaderProps): React.ReactElement => {
             return (
               <CustomHeader
                 monthDate={monthDate}
@@ -205,7 +207,6 @@ const StyledCalendar = ({
                 nextMonthButtonDisabled={nextMonthButtonDisabled}
                 prevYearButtonDisabled={prevYearButtonDisabled}
                 nextYearButtonDisabled={nextYearButtonDisabled}
-                yearOption={yearOption}
               />
             );
           }}
@@ -218,22 +219,20 @@ const StyledCalendar = ({
 export default memo(StyledCalendar);
 
 const Wrapper = styled.div<{
-  $row?: boolean;
-  $width?: string | number;
+  $column?: boolean;
+  $width?: number;
   $margin?: string;
 }>`
-  width: ${({ $width }) => ($width ? $width : "auto")};
-  font-family: PretendardRegular, sans-serif;
+  width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin: ${({ $margin }) => ($margin ? $margin : 0)};
 
-  ${({ $row }) =>
-    $row &&
+  ${({ $column }) =>
+    $column &&
     css`
-      flex-direction: row;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
     `};
 `;
 const ColumnTitle = styled.div`
@@ -242,47 +241,60 @@ const ColumnTitle = styled.div`
 `;
 const RowTitle = styled.div`
   font-size: 14px;
+  color: ${theme.colors.grayFontColor};
   margin-right: 12px;
+  line-height: 1;
 `;
-const DateBox = styled.div<{ $row?: boolean; $margin?: string }>`
-  width: 100%;
-  height: 48px;
-  position: relative;
 
-  .react-datepicker-wrapper,
-  .react-datepicker__input-container {
-    width: 100%;
-    height: 100%;
-  }
-
+const DateBox = styled.div<{
+  $column?: boolean;
+  $arrow?: boolean;
+  $calendar?: boolean;
+  $margin?: string;
+}>`
   .react-datepicker {
+    transform: translateX(-13px);
     border: none;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
   }
-
-  .react-datepicker-popper .react-datepicker__triangle {
-    stroke: ${theme.colors.activeIndigo};
-    fill: ${theme.colors.activeIndigo};
-    color: ${theme.colors.activeIndigo};
+  .react-datepicker__triangle {
+    position: absolute;
+    left: 0px;
+    transform: translate(207px, 0px);
   }
-
+  .react-datepicker-popper[data-placement^="bottom"]
+    .react-datepicker__triangle {
+    fill: ${theme.colors.blackColor};
+    color: ${theme.colors.blackColor};
+  }
+  /* .react-datepicker-popper[data-placement^='bottom']
+        .react-datepicker__triangle::after {
+        border-bottom-color: ${theme.colors.blackColor};
+    }
+    .react-datepicker-popper[data-placement^='bottom']
+        .react-datepicker__triangle::before {
+        border: none;
+    } */
   .react-datepicker__header {
     padding: 12px 0 8px;
     border-bottom: none;
-    background-color: ${theme.colors.activeIndigo};
+    background-color: ${theme.colors.blackColor};
   }
 
   .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
     border-top-right-radius: 0.2rem;
     border-top-left-radius: 0.2rem;
   }
-
+  .react-datepicker__day-names {
+    padding: 0 0.4rem;
+    background-color: ${theme.colors.blackColor};
+  }
   .react-datepicker__day-name {
     color: ${theme.colors.whiteColor};
   }
 
   .react-datepicker__day--selected {
-    background-color: ${theme.colors.activeIndigo};
+    background-color: ${theme.colors.blackColor};
   }
 
   .react-datepicker__year-read-view--down-arrow,
@@ -295,28 +307,52 @@ const DateBox = styled.div<{ $row?: boolean; $margin?: string }>`
   input {
     width: 100%;
     height: 100%;
-    padding: 0 12px;
-    /* border-radius: 4px; */
-    border: 1px solid ${theme.colors.lightGrayBorderColor};
+    padding: 0;
+    font-size: 14px;
     cursor: pointer;
-    background-image: url("./assets/icons/icon_selectArrowDown.svg");
-    background-size: 16px;
-    background-repeat: no-repeat;
-    background-position: top 50% right 12px;
-
-    &:focus {
-      border: 1px solid ${theme.colors.blackColor};
-    }
-
-    &::placeholder {
-      color: ${theme.colors.deepGrayFontColor};
-    }
   }
+
+  ${({ $calendar }) =>
+    $calendar &&
+    css`
+      background-image: url("./assets/icons/icon_calendar.svg");
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: top 50% right 0;
+    `};
+
+  ${({ $arrow }) =>
+    $arrow &&
+    css`
+      background-image: url("./assets/icons/icon_selectArrow.svg");
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: top 50% right 0;
+    `};
+
+  ${({ $column }) =>
+    $column &&
+    css`
+      width: 100%;
+      height: 50px;
+      padding: 0 12px;
+      /* border-radius: 4px; */
+      border: 1px solid ${theme.colors.lightGrayBorderColor};
+      background-position: top 50% right 12px;
+
+      .react-datepicker-wrapper,
+      .react-datepicker__input-container {
+        width: 100%;
+        height: 100%;
+      }
+    `};
 `;
+
 const ArrowBox = styled.div`
   display: flex;
   cursor: pointer;
 `;
+
 const Header = styled.div`
   width: 100%;
   height: 30px;
@@ -325,6 +361,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-around;
 `;
+
 const SelectBox = styled.select`
   width: 68px;
   height: 26px;
@@ -332,11 +369,11 @@ const SelectBox = styled.select`
   text-align: left;
   border: none;
   border-radius: 4px;
-  background-image: url("./assets/icons/icon_selectArrowDown.svg");
-  background-size: 12px;
+  background-image: url("./assets/icons/icon_selectArrow.svg");
+  background-size: 16px;
   background-repeat: no-repeat;
   background-position: right 6px top 52%;
-
+  background-color: ${theme.colors.whiteColor};
   &:nth-child(1) {
     width: 48px;
   }

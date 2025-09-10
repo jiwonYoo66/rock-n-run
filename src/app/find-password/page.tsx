@@ -75,7 +75,7 @@ const FindPassword = () => {
     setIsLoading(true);
 
     try {
-      toast.info("1회용 비밀번호를 발급했습니다.");
+      toast.success("1회용 비밀번호를 발급했습니다.");
       router.push(`/${paths.LOGIN}`);
     } catch (err) {
       console.info(err);

@@ -1,4 +1,3 @@
-"use client";
 import React, { ChangeEvent, memo, useEffect } from "react";
 import styled, { css } from "styled-components";
 import DatePicker, { ReactDatePickerCustomHeaderProps } from "react-datepicker";
@@ -7,7 +6,6 @@ import { getYear, getMonth } from "date-fns";
 import { getYearOption } from "@utils/commons";
 import theme from "@styles/theme";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
-// import { RegularFont } from '@components/styled/StyledComponents';
 
 type StyledCalendarProps = {
   COLUMN?: boolean;
@@ -48,7 +46,6 @@ const CustomHeader = ({
     "12월",
   ];
 
-  console.log(years);
   return (
     <Header>
       {!prevMonthButtonDisabled && (

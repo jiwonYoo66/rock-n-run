@@ -6,6 +6,27 @@ import { toast } from "react-toastify";
 import { Address } from "react-daum-postcode/lib/loadPostcode";
 import { deflate } from "zlib";
 
+// 영문 대소문자 포함 여부
+export const isRequiredChars = (password: string) => {
+  const reg = /(?=.*?[a-z])(?=.*?[A-Z])/;
+  return reg.test(password);
+};
+// 숫자 특수문자 포함 여부
+export const isNumericSpecialChars = (password: string) => {
+  const reg = /(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
+  return reg.test(password);
+};
+// 문자열 길이 8~16자리 체크 여부
+export const isRequiredLength = (password: string) => {
+  const reg = /^.{8,16}$/;
+  return reg.test(password);
+};
+// 반복되는 문자 체크 여부 - 반복되면 true
+export const isRepeatedChars = (password: string) => {
+  const reg = /(.)\1+/;
+  return reg.test(password);
+};
+
 // 아이디 영문 및 숫자
 export const isEngNumber = (word: string) => {
   const idRegex = /^[a-zA-Z0-9]+$/;

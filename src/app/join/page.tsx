@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import * as J from "./join.style";
 import theme from "@styles/theme";
 import { paths } from "@lib/paths";
-import { userLogin } from "src/modules/authentication";
 import { onChangeEventType } from "@utils/types";
+import { validateJoin } from "@utils/validations";
 
 import {
   Wrapper,
@@ -18,16 +18,16 @@ import {
 import StyledSelect from "@components/styled/StyledSelect";
 import StyledInput from "@components/styled/StyledInput";
 import StyledPassword from "@components/styled/StyledPassword";
-import StyledCheckbox from "@components/styled/StyledCheckbox";
 import StyledButton from "@components/styled/StyledButton";
-import StyledCalendar from "@components/styled/StyledCalendar";
+import StyledBirthdayCalendar from "@components/styled/StyledBirthdayCalendar";
 import StyledPolicyCheckbox from "@components/styled/StyledPolicyCheckbox";
 import StyledPostcode from "@components/styled/StyledPostcode";
+import { isEmail } from "@utils/commons";
 
 const Login = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [birthday, setBirthday] = useState(new Date());
+  const [birthday, setBirthday] = useState<Date | null>(null);
   const [checkInfo, setCheckInfo] = useState<Record<string, boolean>>({
     email: false,
     cellphone: false,
@@ -64,6 +64,14 @@ const Login = () => {
   // 중복확인 & 인증
   const handleCheckOverlap = (e: MouseEvent<HTMLButtonElement>) => {
     const { name } = e.currentTarget;
+    if (name === "email") {
+      if (!isEmail(inputs.email))
+        return toast.error("이메일을 정확히 입력해주세요.");
+    }
+    if (name === "cellphone") {
+      if (inputs.cellphone.length < 11)
+        return toast.error("휴대폰번호를 정확히 입력해주세요.");
+    }
     try {
       setCheckInfo((prev) => {
         return {
@@ -71,6 +79,7 @@ const Login = () => {
           [name]: !prev[name],
         };
       });
+      toast.success("인증번호를 전송했습니다.");
     } catch (err) {
       console.error(err);
     }
@@ -109,14 +118,12 @@ const Login = () => {
   };
 
   const onSubmit = async () => {
-    const { email, password } = inputs;
+    if (!validateJoin(inputs, birthday, checkInfo)) return;
 
-    if (!email || !password) {
-      toast.error("로그인 정보를 입력해주세요.");
-      return;
-    }
     setIsLoading(true);
     try {
+      toast.success("회원가입이 완료되었습니다.");
+      router.push(`/`);
     } catch (err) {
       console.info(err);
     } finally {
@@ -132,11 +139,15 @@ const Login = () => {
           title="국적"
           name="nationality"
           value={inputs.nationality}
-          options={["선택", "대한민국"]}
+          options={[
+            { title: "선택", value: "선택" },
+            { title: "대한민국", value: 1 },
+          ]}
           onChange={onChange}
           placeholder="선택"
           margin="0 0 20px"
           COLUMN
+          DATA_VALUE
         />
         <StyledInput
           title="이메일(아이디)"
@@ -145,7 +156,6 @@ const Login = () => {
           onChange={onChange}
           placeholder="이메일을 입력해주세요"
           onClick={handleCheckOverlap}
-          maxLength={11}
           margin="0 0 8px"
           buttonTitle="인증번호"
           padding="14px 100px 14px 12px"
@@ -197,7 +207,7 @@ const Login = () => {
           margin="0 0 8px"
           buttonTitle="인증번호"
           padding="14px 100px 14px 12px"
-          disabled={checkInfo.email}
+          disabled={checkInfo.cellphone}
           BUTTON
         />
         <StyledInput
@@ -208,11 +218,11 @@ const Login = () => {
           maxLength={6}
           margin="0 0 20px"
         />
-        <StyledCalendar
+        <StyledBirthdayCalendar
           title="생년월일"
           value={birthday}
           onChange={(date) => setBirthday(date as Date)}
-          // placeholder="연도. 월. 일"
+          placeholder="연도. 월. 일"
           margin="0 0 20px"
           COLUMN
         />
@@ -235,11 +245,16 @@ const Login = () => {
           title="성별"
           name="gender"
           value={inputs.gender}
-          options={["선택", "남성", "여성"]}
+          options={[
+            { title: "선택", value: "선택" },
+            { title: "남성", value: 1 },
+            { title: "여성", value: 2 },
+          ]}
           onChange={onChange}
           placeholder="선택"
           margin="0 0 32px"
           COLUMN
+          DATA_VALUE
         />
         <StyledPolicyCheckbox
           checkboxId="policyAll"
