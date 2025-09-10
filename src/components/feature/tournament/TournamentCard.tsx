@@ -1,13 +1,16 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import styled, { css } from "styled-components";
 import { BiCalendar } from "react-icons/bi";
 
 import theme from "@styles/theme";
+import { paths } from "@lib/paths";
 
 const TournamentCard = ({ data }: any) => {
+  const router = useRouter();
   return (
-    <Card>
+    <Card onClick={() => router.push(`/${paths.TOURNAMENT}/1`)}>
       <ImageWrapper>
         <Image
           src="/assets/dummy/tour_post1.png"
@@ -30,6 +33,7 @@ export default TournamentCard;
 
 const Card = styled.li`
   width: 100%;
+  cursor: pointer;
   /* ${theme.devices.tablet} {
     width: calc((100% - 44px) / 2);
   }
