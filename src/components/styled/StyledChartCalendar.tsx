@@ -19,76 +19,76 @@ type StyledCalendarProps = {
   excludeDates?: Date[];
 };
 
-const CustomHeader = ({
-  date,
-  changeYear,
-  changeMonth,
-  decreaseMonth,
-  increaseMonth,
-  prevMonthButtonDisabled,
-  nextMonthButtonDisabled,
-}: ReactDatePickerCustomHeaderProps) => {
-  const years = getYearOption();
-  const months = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
+// const CustomHeader = ({
+//   date,
+//   changeYear,
+//   changeMonth,
+//   decreaseMonth,
+//   increaseMonth,
+//   prevMonthButtonDisabled,
+//   nextMonthButtonDisabled,
+// }: ReactDatePickerCustomHeaderProps) => {
+//   const years = getYearOption();
+//   const months = [
+//     "1월",
+//     "2월",
+//     "3월",
+//     "4월",
+//     "5월",
+//     "6월",
+//     "7월",
+//     "8월",
+//     "9월",
+//     "10월",
+//     "11월",
+//     "12월",
+//   ];
 
-  return (
-    <Header>
-      {!prevMonthButtonDisabled && (
-        <ArrowBox>
-          <RiArrowLeftSLine
-            fontSize={22}
-            color={theme.colors.whiteColor}
-            onClick={decreaseMonth}
-          />
-        </ArrowBox>
-      )}
-      <SelectBox
-        value={getYear(date)}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          changeYear(parseInt(e.target.value, 10))
-        }
-      >
-        {years?.map((option: any) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </SelectBox>
-      <SelectBox
-        value={months[getMonth(date)]}
-        onChange={(e) => changeMonth(months.indexOf(e.target.value))}
-      >
-        {months?.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </SelectBox>
-      {!nextMonthButtonDisabled && (
-        <ArrowBox>
-          <RiArrowRightSLine
-            fontSize={22}
-            color={theme.colors.whiteColor}
-            onClick={increaseMonth}
-          />
-        </ArrowBox>
-      )}
-    </Header>
-  );
-};
+//   return (
+//     <Header>
+//       {!prevMonthButtonDisabled && (
+//         <ArrowBox>
+//           <RiArrowLeftSLine
+//             fontSize={22}
+//             color={theme.colors.whiteColor}
+//             onClick={decreaseMonth}
+//           />
+//         </ArrowBox>
+//       )}
+//       <SelectBox
+//         value={getYear(date)}
+//         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+//           changeYear(parseInt(e.target.value, 10))
+//         }
+//       >
+//         {years?.map((option: any) => (
+//           <option key={option} value={option}>
+//             {option}
+//           </option>
+//         ))}
+//       </SelectBox>
+//       <SelectBox
+//         value={months[getMonth(date)]}
+//         onChange={(e) => changeMonth(months.indexOf(e.target.value))}
+//       >
+//         {months?.map((option) => (
+//           <option key={option} value={option}>
+//             {option}
+//           </option>
+//         ))}
+//       </SelectBox>
+//       {!nextMonthButtonDisabled && (
+//         <ArrowBox>
+//           <RiArrowRightSLine
+//             fontSize={22}
+//             color={theme.colors.whiteColor}
+//             onClick={increaseMonth}
+//           />
+//         </ArrowBox>
+//       )}
+//     </Header>
+//   );
+// };
 
 const StyledChartCalendar = ({
   BORDER,
@@ -185,6 +185,9 @@ const DateBox = styled.div<{
   $margin?: string;
 }>`
   .react-datepicker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
     border: none;
     .react-datepicker__navigation {
@@ -207,6 +210,7 @@ const DateBox = styled.div<{
     font-family: PretendardSemiBold, sans-serif;
   }
   .react-datepicker__header {
+    /* width: 100%; */
     padding: 24px 0;
     border-bottom: none;
     background-color: transparent;
@@ -214,6 +218,7 @@ const DateBox = styled.div<{
   .react-datepicker__day-names {
     display: flex;
     justify-content: space-between;
+    margin: 0 0 16px;
     padding: 0 0.4rem;
   }
   .react-datepicker__day-name {
@@ -243,7 +248,7 @@ const DateBox = styled.div<{
   .react-datepicker__week {
     display: flex;
     justify-content: space-between;
-    /* margin: 0 0 8px; */
+    margin: 0 0 4px;
   }
   .react-datepicker__day:not([aria-disabled="true"]):hover,
   .react-datepicker__month-text:not([aria-disabled="true"]):hover,
@@ -260,70 +265,35 @@ const DateBox = styled.div<{
     font-size: 14px;
     cursor: pointer;
   }
-
-  ${({ $calendar }) =>
-    $calendar &&
-    css`
-      background-image: url("./assets/icons/icon_calendar.svg");
-      background-size: 16px;
-      background-repeat: no-repeat;
-      background-position: top 50% right 0;
-    `};
-
-  ${({ $arrow }) =>
-    $arrow &&
-    css`
-      background-image: url("./assets/icons/icon_selectArrow.svg");
-      background-size: 16px;
-      background-repeat: no-repeat;
-      background-position: top 50% right 0;
-    `};
-
-  ${({ $column }) =>
-    $column &&
-    css`
-      width: 100%;
-      height: 50px;
-      padding: 0 12px;
-      /* border-radius: 4px; */
-      border: 1px solid ${theme.colors.lightGrayBorderColor};
-      background-position: top 50% right 12px;
-
-      .react-datepicker-wrapper,
-      .react-datepicker__input-container {
-        width: 100%;
-        height: 100%;
-      }
-    `};
 `;
 
-const ArrowBox = styled.div`
-  display: flex;
-  cursor: pointer;
-`;
+// const ArrowBox = styled.div`
+//   display: flex;
+//   cursor: pointer;
+// `;
 
-const Header = styled.div`
-  width: 100%;
-  height: 30px;
-  padding: 0 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-`;
+// const Header = styled.div`
+//   width: 100%;
+//   height: 30px;
+//   padding: 0 6px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-around;
+// `;
 
-const SelectBox = styled.select`
-  width: 68px;
-  height: 26px;
-  padding: 0 6px;
-  text-align: left;
-  border: none;
-  border-radius: 4px;
-  background-image: url("./assets/icons/icon_selectArrow.svg");
-  background-size: 16px;
-  background-repeat: no-repeat;
-  background-position: right 6px top 52%;
-  background-color: ${theme.colors.whiteColor};
-  &:nth-child(1) {
-    width: 48px;
-  }
-`;
+// const SelectBox = styled.select`
+//   width: 68px;
+//   height: 26px;
+//   padding: 0 6px;
+//   text-align: left;
+//   border: none;
+//   border-radius: 4px;
+//   background-image: url("./assets/icons/icon_selectArrow.svg");
+//   background-size: 16px;
+//   background-repeat: no-repeat;
+//   background-position: right 6px top 52%;
+//   background-color: ${theme.colors.whiteColor};
+//   &:nth-child(1) {
+//     width: 48px;
+//   }
+// `;

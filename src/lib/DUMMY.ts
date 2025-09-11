@@ -48,3 +48,41 @@ export const EVENTS_DATA = [
       "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
   },
 ];
+
+export const COURSE_DATA = [
+  { type: "100M", recruitment: 200 },
+  { type: "100K", recruitment: 200 },
+  { type: "70K", recruitment: 200 },
+  { type: "38K-J", recruitment: 800 },
+  { type: "38K-P", recruitment: 800 },
+  { type: "20K", recruitment: 200 },
+  { type: "5K", recruitment: 200 },
+  { type: "4K-VT", recruitment: 200 },
+];
+export const PRICE_DATA = [
+  { type: "100M", price: 55000 },
+  { type: "100K", price: 55000 },
+  { type: "70K", price: 55000 },
+  { type: "38K-J", price: 55000 },
+  { type: "38K-P", price: 55000 },
+  { type: "20K", price: 55000 },
+  { type: "5K", price: 55000 },
+  { type: "4K-VT", price: 55000 },
+];
+export const PRODUCT_DATA = [
+  {
+    name: "기념 티셔츠",
+    price: 59000,
+    url: "/assets/dummy/reservation_product1.svg",
+  },
+  {
+    name: "완주 메달",
+    price: 0,
+    url: "/assets/dummy/reservation_product2.svg",
+  },
+  {
+    name: "타투 스티커",
+    price: 5000,
+    url: "/assets/dummy/reservation_product3.svg",
+  },
+];

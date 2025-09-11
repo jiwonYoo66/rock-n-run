@@ -11,6 +11,7 @@ const TournamentCard = ({ data }: any) => {
   const router = useRouter();
   return (
     <Card onClick={() => router.push(`/${paths.TOURNAMENT}/1`)}>
+      {/* TODO: 임시 아이디*/}
       <ImageWrapper>
         <Image
           src="/assets/dummy/tour_post1.png"
