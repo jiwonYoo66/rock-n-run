@@ -1,12 +1,16 @@
 "use client";
+import { useRouter, useParams } from "next/navigation";
 import styled, { css } from "styled-components";
 
 import theme from "@styles/theme";
 
 import { FlexBox } from "@components/share/commons/commons.style";
 import StyledButton from "@components/styled/StyledButton";
+import { paths } from "@lib/paths";
 
-const CourseCard = ({ data }: any) => {
+const CourseCard = ({ data, index }: any) => {
+    const router = useRouter();
+    const { tourId } = useParams();
     return (
         <Card>
             <FlexBox
@@ -38,12 +42,17 @@ const CourseCard = ({ data }: any) => {
                 </Description>
             </FlexBox>
             <StyledButton
-                title="참가신청하러가기"
+                title={index === 3 ? "예약마감" : "참가신청하러가기"} //TODO: 임시
+                onClick={() =>
+                    router.push(
+                        `/${paths.TOURNAMENT}/${tourId}/${paths.COURSE}/${index}`
+                    )
+                } //TODO: 임시 index 처리
                 margin="32px 0 0"
                 height={60}
                 fontSize={22}
                 fontFamily="PretendardSemiBold"
-                disabled={true}
+                disabled={index === 3} //TODO: 임시
             />
         </Card>
     );
