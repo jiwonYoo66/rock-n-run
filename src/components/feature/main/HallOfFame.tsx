@@ -32,7 +32,7 @@ const HallOfFame = () => {
       {/* mobile, tablet */}
       <MobileWrapper>
         <Swiper
-          slidesPerView={width >= 720 ? 2 : 1}
+          slidesPerView={width! >= 720 ? 2 : 1}
           // centeredSlides
           className="mySwiper"
           style={{ padding: "0 16px" }}

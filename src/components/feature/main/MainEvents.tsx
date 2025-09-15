@@ -27,7 +27,7 @@ const MainEvents = () => {
   useEffect(() => {
     videoRefs.current.forEach((video, i) => {
       if (!video) return;
-      if (width >= 1080 && i === 0) {
+      if (width! >= 1080 && i === 0) {
         video.play().catch(() => {});
       } else {
         video.currentTime = 1;

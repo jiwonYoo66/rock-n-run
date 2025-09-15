@@ -25,7 +25,7 @@ const RecommendedProducts = () => {
       {/* mobile, tablet */}
       <MobileWrapper>
         <Swiper
-          slidesPerView={width >= 720 ? 3 : 1}
+          slidesPerView={width! >= 720 ? 3 : 1}
           // centeredSlides
           className="mySwiper"
           style={{ padding: "0 16px" }}

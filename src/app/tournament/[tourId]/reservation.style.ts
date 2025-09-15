@@ -26,6 +26,21 @@ export const DetailWrapper = styled.div`
   }
 `;
 
+export const MobileWrapper = styled.div`
+  width: 100%;
+  ${theme.devices.desktop} {
+    display: none;
+  }
+`;
+
+export const ImageArea = styled.div`
+  display: none;
+  ${theme.devices.desktop} {
+    display: flex;
+    gap: 44px;
+  }
+`;
+
 export const ImageWrapper = styled.div`
   position: relative;
   margin: 0 0 20px;
@@ -53,7 +68,7 @@ export const InfoBlock = styled.li`
   }
 `;
 export const InfoHeader = styled.div`
-  ${theme.typography.bodyDesktop}
+  ${theme.typography.headline2}
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,12 +77,15 @@ export const InfoHeader = styled.div`
   border-top: ${theme.colors.blackColor} 1px solid;
   border-bottom: ${theme.colors.blackColor} 1px solid;
   font-family: PretendardSemiBold, sans-serif;
+  ${theme.devices.desktop} {
+    ${theme.typography.bodyDesktop}
+  }
 `;
 export const InfoContent = styled.div<{
   $fontColor?: string;
   $fontFamily?: string;
 }>`
-  ${theme.typography.bodyDesktop}
+  ${theme.typography.headline2}
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,6 +97,9 @@ export const InfoContent = styled.div<{
   color: ${({ $fontColor }) =>
     $fontColor ? $fontColor : theme.colors.blackColor};
   white-space: pre-wrap;
+  ${theme.devices.desktop} {
+    ${theme.typography.bodyDesktop}
+  }
 `;
 export const InfoListWrapper = styled.ul`
   width: 100%;
@@ -89,7 +110,7 @@ export const InfoList = styled.li`
   list-style-type: disc;
 `;
 export const Info = styled.span<{ $disc?: boolean }>`
-  ${theme.typography.bodyDesktop}
+  ${theme.typography.headline2}
   flex:1;
   display: inline-block;
   padding: 8px 12px;
@@ -102,6 +123,9 @@ export const Info = styled.span<{ $disc?: boolean }>`
       margin-left: 32px;
       padding: 8px 12px 8px 0;
     `}
+  ${theme.devices.desktop} {
+    ${theme.typography.bodyDesktop}
+  }
 `;
 export const InfoDetail = styled.div<{ $padding?: string }>`
   position: relative;
@@ -124,16 +148,22 @@ export const ProductWrapper = styled.li`
   }
 `;
 export const ProductBadge = styled.span`
-  ${theme.typography.headline1}
+  ${theme.typography.headline2}
   display: inline-block;
   padding: 8px 12px;
   font-family: PretendardMedium, sans-serif;
   border: ${theme.colors.blackColor} 1px solid;
+  ${theme.devices.desktop} {
+    ${theme.typography.headline1}
+  }
 `;
 export const ProductPrice = styled.div`
-  ${theme.typography.headline1}
+  ${theme.typography.headline2}
   margin: 12px 0 0;
   font-family: PretendardMedium, sans-serif;
+  ${theme.devices.desktop} {
+    ${theme.typography.headline1}
+  }
 `;
 export const MobileSubmit = styled.div`
   position: fixed;
