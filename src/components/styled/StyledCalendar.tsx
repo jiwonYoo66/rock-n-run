@@ -301,7 +301,7 @@ const DateBox = styled.div<{
   ${({ $calendar }) =>
     $calendar &&
     css`
-      background-image: url("./assets/icons/icon_calendar.svg");
+      background-image: url("/assets/icons/icon_calendar.svg");
       background-size: 16px;
       background-repeat: no-repeat;
       background-position: top 50% right 0;
@@ -310,7 +310,7 @@ const DateBox = styled.div<{
   ${({ $arrow }) =>
     $arrow &&
     css`
-      background-image: url("./assets/icons/icon_selectArrow.svg");
+      background-image: url("/assets/icons/icon_selectArrow.svg");
       background-size: 16px;
       background-repeat: no-repeat;
       background-position: top 50% right 0;
@@ -355,7 +355,7 @@ const SelectBox = styled.select`
   text-align: left;
   border: none;
   border-radius: 4px;
-  background-image: url("./assets/icons/icon_selectArrow.svg");
+  background-image: url("/assets/icons/icon_selectArrow.svg");
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: right 6px top 52%;

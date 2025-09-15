@@ -15,6 +15,9 @@ type StyledCalendarProps = {
   title?: string;
   name?: string;
   width?: number;
+  height?: number;
+  fontSize?: number;
+  fontFamily?: string;
   margin?: string;
   dateFormat?: string;
   value: Date | null;
@@ -110,6 +113,9 @@ const StyledCalendar = ({
   title,
   name,
   width,
+  height = 50,
+  fontSize = 14,
+  fontFamily = "PretendardRegular",
   margin,
   dateFormat = "yyyy-MM-dd",
   value = new Date(),
@@ -121,7 +127,14 @@ const StyledCalendar = ({
     return (
       <Wrapper $column={COLUMN} $width={width} $margin={margin}>
         {title && <ColumnTitle>{title}</ColumnTitle>}
-        <DateBox $arrow={ARROW} $calendar={CALENDAR} $column={COLUMN}>
+        <DateBox
+          $arrow={ARROW}
+          $calendar={CALENDAR}
+          $column={COLUMN}
+          $height={height}
+          $fontSize={fontSize}
+          $fontFamily={fontFamily}
+        >
           <DatePicker
             dateFormat={dateFormat}
             locale={ko as any}
@@ -251,6 +264,9 @@ const DateBox = styled.div<{
   $arrow?: boolean;
   $calendar?: boolean;
   $margin?: string;
+  $height?: number;
+  $fontSize?: number;
+  $fontFamily?: string;
 }>`
   .react-datepicker {
     transform: translateX(-13px);
@@ -308,14 +324,19 @@ const DateBox = styled.div<{
     width: 100%;
     height: 100%;
     padding: 0;
-    font-size: 14px;
+    font-size: ${({ $fontSize }) => $fontSize}px;
+    font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
     cursor: pointer;
+    &::placeholder {
+      font-size: ${({ $fontSize }) => $fontSize}px;
+      font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
+    }
   }
 
   ${({ $calendar }) =>
     $calendar &&
     css`
-      background-image: url("./assets/icons/icon_calendar.svg");
+      background-image: url("/assets/icons/icon_calendar.svg");
       background-size: 16px;
       background-repeat: no-repeat;
       background-position: top 50% right 0;
@@ -324,17 +345,17 @@ const DateBox = styled.div<{
   ${({ $arrow }) =>
     $arrow &&
     css`
-      background-image: url("./assets/icons/icon_selectArrow.svg");
+      background-image: url("/assets/icons/icon_selectArrow.svg");
       background-size: 16px;
       background-repeat: no-repeat;
       background-position: top 50% right 0;
     `};
 
-  ${({ $column }) =>
+  ${({ $column, $height }) =>
     $column &&
     css`
       width: 100%;
-      height: 50px;
+      height: ${$height ? $height : 50}px;
       padding: 0 12px;
       /* border-radius: 4px; */
       border: 1px solid ${theme.colors.lightGrayBorderColor};
@@ -369,7 +390,7 @@ const SelectBox = styled.select`
   text-align: left;
   border: none;
   border-radius: 4px;
-  background-image: url("./assets/icons/icon_selectArrow.svg");
+  background-image: url("/assets/icons/icon_selectArrow.svg");
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: right 6px top 52%;

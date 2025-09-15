@@ -47,7 +47,7 @@ const StyledSelect = ({
   placeholder,
   fontFamily = "PretendardRegular",
   fontColor = theme.colors.blackColor,
-  fontSize,
+  fontSize = 15,
   disabled,
 }: StyledSelectType) => {
   if (COLUMN) {
@@ -68,6 +68,7 @@ const StyledSelect = ({
             placeholder === value ? theme.colors.deepGrayFontColor : fontColor
           }
           $fontFamily={fontFamily}
+          $fontSize={fontSize}
           disabled={disabled}
           name={name}
           value={value}
@@ -212,28 +213,30 @@ const Select = styled.select<{
   $height?: number;
   $fontColor?: string;
   $fontFamily?: string;
+  $fontSize?: number;
 }>`
   width: ${({ $width }) => ($width ? `${$width}px` : "100%")};
   min-width: 80px;
   font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
   color: ${({ $fontColor }) =>
     $fontColor ? $fontColor : theme.colors.blackColor};
-  background-image: url("./assets/icons/icon_selectArrowDown.svg");
+  background-image: url("/assets/icons/icon_selectArrowDown.svg");
   background-size: 12px;
   background-repeat: no-repeat;
   background-position: top 50% right 0;
   background-color: inherit;
 
-  ${({ $column, $height }) =>
+  ${({ $column, $height, $fontSize }) =>
     $column &&
     css`
       padding: 0 12px;
       height: ${$height ? `${$height}px` : "50px"};
+      font-size: ${$fontSize}px;
       /* font-size: 15px; */
       /* border-radius: 4px; */
       border: 1px solid ${theme.colors.lightGrayBorderColor};
       background-position: top 50% right 12px;
-      background-image: url("./assets/icons/icon_selectArrow.svg");
+      background-image: url("/assets/icons/icon_selectArrow.svg");
       background-size: 24px;
     `};
 

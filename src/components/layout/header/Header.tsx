@@ -82,7 +82,7 @@ const Header = () => {
                 <Image
                   width={16}
                   height={16}
-                  src="./assets/icons/icon_run.svg"
+                  src="/assets/icons/icon_run.svg"
                   alt="running icon"
                 />
               </YellowLink>
@@ -92,7 +92,7 @@ const Header = () => {
                 <Image
                   width={16}
                   height={16}
-                  src="./assets/icons/icon_gallery.svg"
+                  src="/assets/icons/icon_gallery.svg"
                   alt="gallery icon"
                 />
               </YellowLink>
@@ -119,7 +119,7 @@ const Header = () => {
             <Image
               width={160}
               height={21}
-              src="./assets/images/logo.svg"
+              src="/assets/images/logo.svg"
               alt="logo"
             />
           </Link>
@@ -152,7 +152,7 @@ const Header = () => {
             <Image
               width={24}
               height={24}
-              src="./assets/icons/icon_menu.svg"
+              src="/assets/icons/icon_menu.svg"
               alt="menu icon"
             />
           </MenuButton>

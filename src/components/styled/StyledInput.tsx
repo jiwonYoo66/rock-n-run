@@ -17,6 +17,8 @@ type StyledInputProps = {
   BUTTON?: boolean;
   width?: string | number;
   height?: number;
+  fontSize?: number;
+  fontFamily?: string;
   padding?: string;
   margin?: string;
   border?: string;
@@ -49,6 +51,8 @@ const StyledInput = forwardRef(
       ASTERISK,
       width,
       height = 50,
+      fontSize = 14,
+      fontFamily = "PretendardRegular",
       padding,
       margin,
       border,
@@ -143,6 +147,8 @@ const StyledInput = forwardRef(
           >
             <Input
               $padding={padding}
+              $fontSize={fontSize}
+              $fontFamily={fontFamily}
               ref={ref}
               name={name}
               value={value}
@@ -246,11 +252,21 @@ const InputBox = styled.div<{
       border: 1px solid ${theme.colors.blackColor};
     `};
 `;
-const Input = styled.input<{ $padding?: string }>`
+const Input = styled.input<{
+  $padding?: string;
+  $fontSize?: number;
+  $fontFamily?: string;
+}>`
   width: 100%;
   height: 100%;
   padding: ${({ $padding }) => ($padding ? $padding : "14px 12px")};
+  font-size: ${({ $fontSize }) => $fontSize}px;
+  font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
   border-radius: 4px;
+  &::placeholder {
+    font-size: ${({ $fontSize }) => $fontSize}px;
+    font-family: ${({ $fontFamily }) => $fontFamily}, sans-serif;
+  }
 `;
 const WarningBox = styled.div<{ $height?: number }>`
   height: ${({ $height }) => $height}px;

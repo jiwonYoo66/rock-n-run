@@ -288,7 +288,7 @@ const DateBox = styled.div<{
 //   text-align: left;
 //   border: none;
 //   border-radius: 4px;
-//   background-image: url("./assets/icons/icon_selectArrow.svg");
+//   background-image: url("/assets/icons/icon_selectArrow.svg");
 //   background-size: 16px;
 //   background-repeat: no-repeat;
 //   background-position: right 6px top 52%;

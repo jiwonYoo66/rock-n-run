@@ -124,3 +124,131 @@ export const validateJoin = (
 
   return validity;
 };
+type Form = {
+  nationality: string;
+  gender: string;
+  krName: string;
+  engFirstName: string;
+  engLastName: string;
+  phone: string;
+  emergencyContact: string;
+  emergencyContactRelationship: string;
+  email: string;
+  merchandise: string;
+  birthday: null | Date;
+};
+
+export const validateRegisterInputs = (inputs: Form) => {
+  const {
+    nationality,
+    gender,
+    krName,
+    engFirstName,
+    engLastName,
+    phone,
+    emergencyContact,
+    emergencyContactRelationship,
+    email,
+    merchandise,
+    birthday,
+  } = inputs;
+  if (nationality === "국적") {
+    toast.error(`국적을 선택해주세요.`);
+    return false;
+  }
+  if (gender === "성별") {
+    toast.error(`성별을 선택해주세요.`);
+    return false;
+  }
+  if (!krName) {
+    toast.error(`한글 이름을 입력해주세요.`);
+    return false;
+  }
+  if (!engFirstName) {
+    toast.error(`영문 이름을 입력해주세요.`);
+    return false;
+  }
+  if (!engLastName) {
+    toast.error(`영문 성을 입력해주세요.`);
+    return false;
+  }
+  if (!birthday) {
+    toast.error(`생일을 선택해주세요.`);
+    return false;
+  }
+  if (phone.length < 11) {
+    toast.error(`전화번호를 정확히 입력해주세요.`);
+    return false;
+  }
+  if (emergencyContact.length < 11) {
+    toast.error(`비상 연락처를 정확히 입력해주세요.`);
+    return false;
+  }
+  if (!emergencyContactRelationship) {
+    toast.error(`비상 연락처 관계를 입력해주세요.`);
+    return false;
+  }
+  if (!isEmail(email)) {
+    toast.error(`이메일을 정확히 입력해주세요.`);
+    return false;
+  }
+  if (merchandise === "기념품을 선택해주세요.") {
+    toast.error(`기념품을 선택해주세요.`);
+    return false;
+  }
+
+  return true;
+};
+
+export const validateMultipleInputs = (list: Form[]) => {
+  for (let idx = 0; idx < list.length; idx++) {
+    const p = list[idx];
+
+    if (p.nationality === "국적") {
+      toast.error(`참가자${idx + 1} 국적을 선택해주세요.`);
+      return false;
+    }
+    if (p.gender === "성별") {
+      toast.error(`참가자${idx + 1} 성별을 선택해주세요.`);
+      return false;
+    }
+    if (!p.krName) {
+      toast.error(`참가자${idx + 1} 한글 이름을 입력해주세요.`);
+      return false;
+    }
+    if (!p.engFirstName) {
+      toast.error(`참가자${idx + 1} 영문 이름을 입력해주세요.`);
+      return false;
+    }
+    if (!p.engLastName) {
+      toast.error(`참가자${idx + 1} 영문 성을 입력해주세요.`);
+      return false;
+    }
+    if (!p.birthday) {
+      toast.error(`참가자${idx + 1} 생일을 선택해주세요.`);
+      return false;
+    }
+    if (p.phone.length < 11) {
+      toast.error(`참가자${idx + 1} 전화번호를 정확히 입력해주세요.`);
+      return false;
+    }
+    if (p.emergencyContact.length < 11) {
+      toast.error(`참가자${idx + 1} 비상 연락처를 정확히 입력해주세요.`);
+      return false;
+    }
+    if (!p.emergencyContactRelationship) {
+      toast.error(`참가자${idx + 1} 비상 연락처 관계를 입력해주세요.`);
+      return false;
+    }
+    if (!isEmail(p.email)) {
+      toast.error(`참가자${idx + 1} 이메일을 정확히 입력해주세요.`);
+      return false;
+    }
+    if (p.merchandise === "기념품을 선택해주세요.") {
+      toast.error(`참가자${idx + 1} 기념품을 선택해주세요.`);
+      return false;
+    }
+  }
+
+  return true;
+};

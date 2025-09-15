@@ -16,7 +16,7 @@ const Footer = () => {
           <Image
             width={160}
             height={21}
-            src="./assets/images/logo.svg"
+            src="/assets/images/logo.svg"
             alt="Logo"
           />
           <FlexBox $justifyContent="flex-end" $gap={12}>
@@ -28,7 +28,7 @@ const Footer = () => {
               <Image
                 width={24}
                 height={24}
-                src="./assets/icons/icon_insta.svg"
+                src="/assets/icons/icon_insta.svg"
                 alt="instagram icon"
               />
             </Button>
@@ -40,7 +40,7 @@ const Footer = () => {
               <Image
                 width={24}
                 height={24}
-                src="./assets/icons/icon_youtube.svg"
+                src="/assets/icons/icon_youtube.svg"
                 alt="youtube icon"
               />
             </Button>
